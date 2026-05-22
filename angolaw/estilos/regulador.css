@@ -1,0 +1,236 @@
+/* ================================================
+   regulador.css — Regulador Page
+   ================================================ */
+
+/* ── Compliance overview grid ── */
+.compliance-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 40px;
+}
+
+.compliance-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.compliance-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.compliance-card--fiscal::before   { background: var(--amber-500); }
+.compliance-card--laboral::before  { background: var(--blue-500); }
+.compliance-card--rgpd::before     { background: var(--purple-500); }
+.compliance-card--comercial::before{ background: var(--green-500); }
+
+.compliance-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+.compliance-card__icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: grid; place-items: center;
+  margin-bottom: 14px;
+}
+
+.compliance-card--fiscal   .compliance-card__icon { background: var(--amber-50);  color: var(--amber-500); }
+.compliance-card--laboral  .compliance-card__icon { background: var(--blue-50);   color: var(--blue-500); }
+.compliance-card--rgpd     .compliance-card__icon { background: var(--purple-50); color: var(--purple-500); }
+.compliance-card--comercial .compliance-card__icon { background: var(--green-50); color: var(--green-500); }
+
+.compliance-card__title {
+  font-size: .95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.compliance-card__desc {
+  font-size: .8rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.compliance-card__progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: .75rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+/* ── Deadlines ── */
+.deadlines-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.deadline-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition);
+}
+
+.deadline-item:hover { border-color: var(--border-strong); }
+
+.deadline-item__date {
+  min-width: 60px;
+  text-align: center;
+  background: var(--bg-page);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+}
+
+.deadline-item__day {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.deadline-item__month {
+  font-size: .68rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.deadline-item__info { flex: 1; }
+
+.deadline-item__title {
+  font-size: .92rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 3px;
+}
+
+.deadline-item__desc { font-size: .8rem; color: var(--text-secondary); }
+
+.deadline-item__urgency {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: .72rem;
+  font-weight: 600;
+}
+
+.deadline-item__urgency--high { background: var(--red-50); color: var(--red-600); }
+.deadline-item__urgency--med  { background: var(--amber-50); color: var(--amber-600); }
+.deadline-item__urgency--low  { background: var(--green-50); color: var(--green-600); }
+
+/* ── Two column layout ── */
+.regulador-cols {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 24px;
+}
+
+/* ── Checklist section ── */
+.checklist-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.checklist-section__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.checklist-section__title { font-size: 1rem; font-weight: 600; color: var(--text-primary); }
+
+.checklist-section__progress-text {
+  font-size: .8rem;
+  color: var(--text-muted);
+}
+
+.checklist-section__bar {
+  margin: 12px 0 20px;
+}
+
+/* ── Task sidebar ── */
+.tasks-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: var(--shadow-sm);
+}
+
+.tasks-panel__title {
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.task-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.task-item:last-child { border-bottom: none; }
+
+.task-item__dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
+.task-item__dot--fiscal   { background: var(--amber-500); }
+.task-item__dot--laboral  { background: var(--blue-500); }
+.task-item__dot--rgpd     { background: var(--purple-500); }
+.task-item__dot--comercial{ background: var(--green-500); }
+
+.task-item__text {
+  font-size: .85rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+  flex: 1;
+}
+
+.task-item__due {
+  font-size: .72rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+@media (max-width: 1100px) {
+  .compliance-grid { grid-template-columns: repeat(2, 1fr); }
+  .regulador-cols  { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .compliance-grid { grid-template-columns: 1fr 1fr; }
+  .deadline-item { flex-wrap: wrap; }
+}

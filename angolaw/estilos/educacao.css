@@ -1,0 +1,274 @@
+/* ================================================
+   educacao.css — Educação Jurídica Page
+   ================================================ */
+
+/* ── Featured Video ── */
+.video-featured {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.video-player {
+  background: var(--navy-950);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 16/9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+}
+
+.video-player__bg {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(160deg, rgba(11,19,37,.7) 0%, rgba(11,19,37,.3) 100%),
+    linear-gradient(135deg, #1a3a6e 0%, #2d5fa6 50%, #1e2d55 100%);
+}
+
+.video-player__bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    90deg, transparent, transparent 24px,
+    rgba(255,255,255,.025) 24px, rgba(255,255,255,.025) 25px
+  );
+}
+
+.video-player__content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #fff;
+}
+
+.video-player__play-btn {
+  width: 68px; height: 68px;
+  background: rgba(255,255,255,.95);
+  border-radius: 50%;
+  display: grid; place-items: center;
+  margin: 0 auto 20px;
+  color: var(--navy-900);
+  box-shadow: 0 8px 32px rgba(0,0,0,.3);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.video-player:hover .video-player__play-btn {
+  transform: scale(1.08);
+  box-shadow: 0 12px 40px rgba(0,0,0,.4);
+}
+
+.video-player__title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+}
+
+.video-player__desc {
+  font-size: .85rem;
+  color: rgba(255,255,255,.65);
+  max-width: 380px;
+  margin: 0 auto 14px;
+}
+
+.video-player__duration {
+  display: inline-block;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: .78rem;
+  backdrop-filter: blur(6px);
+}
+
+/* ── Playlist ── */
+.playlist {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.playlist__header {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.playlist__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.playlist__item:last-child { border-bottom: none; }
+.playlist__item:hover { background: var(--bg-page); }
+
+.playlist__item--active {
+  background: rgba(201,168,76,.08);
+  border-left: 3px solid var(--accent-gold);
+}
+
+.playlist__icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--bg-page);
+  border: 1px solid var(--border);
+  display: grid; place-items: center;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.playlist__item--active .playlist__icon {
+  background: var(--accent-gold-dim);
+  border-color: rgba(201,168,76,.3);
+  color: var(--accent-gold);
+}
+
+.playlist__info { flex: 1; min-width: 0; }
+
+.playlist__title {
+  font-size: .85rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playlist__meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 2px;
+}
+
+.playlist__cat { font-size: .72rem; color: var(--text-muted); }
+.playlist__dur { font-size: .72rem; color: var(--text-muted); }
+
+/* ── Theme cards ── */
+.themes-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 48px;
+}
+
+.theme-card {
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.theme-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+.theme-card--blue   { background: linear-gradient(135deg, #1a3a6e 0%, #2d5fa6 100%); }
+.theme-card--green  { background: linear-gradient(135deg, #1a5c3a 0%, #28855a 100%); }
+.theme-card--amber  { background: linear-gradient(135deg, #7c3a00 0%, #c47a1e 100%); }
+.theme-card--purple { background: linear-gradient(135deg, #4a1c6e 0%, #7c3aed 100%); }
+
+.theme-card__icon {
+  font-size: 1.6rem;
+  margin-bottom: 12px;
+}
+
+.theme-card__title {
+  font-size: .95rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.theme-card__count {
+  font-size: .78rem;
+  color: rgba(255,255,255,.6);
+}
+
+/* ── Articles grid ── */
+.articles-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.articles-toolbar .search-bar { flex: 1; min-width: 200px; }
+
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.article-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px 22px 18px;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition);
+  cursor: pointer;
+}
+
+.article-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+.article-card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.article-card__read {
+  font-size: .75rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.article-card__title {
+  font-size: .97rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.article-card__desc {
+  font-size: .82rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  font-weight: 300;
+}
+
+@media (max-width: 1100px) {
+  .video-featured { grid-template-columns: 1fr; }
+  .themes-grid { grid-template-columns: repeat(2, 1fr); }
+  .articles-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .themes-grid { grid-template-columns: 1fr 1fr; }
+  .articles-grid { grid-template-columns: 1fr; }
+}

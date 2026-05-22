@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JurisAccess - Formulário Contribuinte</title>
+    <style>
+        :root {
+            --primary-navy: #0c1427; /* Azul Marinho da JurisAccess */
+            --accent-gold: #d9b053;  /* Dourado dos botões */
+            --bg-light: #f5f7fa;     /* Fundo da plataforma */
+            --text-dark: #1a1a1a;
+            --text-muted: #64748b;
+            --white: #ffffff;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', 'Segoe UI', Tahoma, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 700px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .form-header {
+            background-color: var(--primary-navy);
+            color: var(--white);
+            padding: 30px;
+            text-align: center;
+        }
+
+        .form-header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .form-header p {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .form-body {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .label-question {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary-navy);
+            margin-bottom: 20px;
+        }
+
+        /* Botões de Opção Estilizados */
+        .option-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            padding: 15px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            color: var(--text-muted);
+            background: var(--white);
+        }
+
+        .option-btn:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        .option-btn.selected {
+            border-color: var(--accent-gold);
+            background-color: #fffcf5;
+            color: var(--accent-gold);
+        }
+
+        /* Inputs e Formulário Auxílio */
+        .grid-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .input-box {
+            margin-bottom: 15px;
+        }
+
+        .input-box.full {
+            grid-column: span 2;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-muted);
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--accent-gold);
+        }
+
+        /* Upload de Arquivo */
+        .upload-area {
+            border: 2px dashed var(--border);
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            background: #fcfcfc;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: var(--accent-gold);
+            background: #fffcf5;
+        }
+
+        .btn-submit {
+            background-color: var(--accent-gold);
+            color: var(--primary-navy);
+            border: none;
+            padding: 16px;
+            width: 100%;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #c49a3f;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .grid-form { grid-template-columns: 1fr; }
+            .input-box.full { grid-column: span 1; }
+            .form-body { padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <div class="form-header">
+        <h1>Portal do Contribuinte</h1>
+        <p>Validação de cadastro e auxílio administrativo</p>
+    </div>
+
+    <div class="form-body">
+        <!-- PERGUNTA 1 -->
+        <div class="section" id="bloco-contribuinte">
+            <span class="label-question">Já está cadastrada no portal do contribuinte?</span>
+            <div class="option-group">
+                <div class="option-btn" onclick="selecionarOpcao('cadastro', 'sim', this)">Sim</div>
+                <div class="option-btn" onclick="selecionarOpcao('cadastro', 'nao', this)">Não</div>
+            </div>
+        </div>
+
+        <!-- SE SIM: UPLOAD -->
+        <div class="section hidden" id="secao-upload">
+            <span class="label-question">Insira seu formulário de cadastro:</span>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">(Extrair do portal do contribuinte)</p>
+            <div class="upload-area" onclick="document.getElementById('file-cad').click()">
+                <span id="file-name">Clique aqui para carregar o ficheiro PDF</span>
+                <input type="file" id="file-cad" class="hidden" onchange="atualizarNome(this)">
+            </div>
+            <button class="btn-submit">Submeter Documento</button>
+        </div>
+
+        <!-- SE NÃO: AUXÍLIO -->
+        <div class="section hidden" id="secao-auxilio-pergunta">
+            <span class="label-question">Gostaria de receber auxílio para o cadastramento no portal?</span>
+            <div class="option-group">
+                <div class="option-btn" onclick="selecionarOpcao('auxilio', 'sim', this)">Sim</div>
+                <div class="option-btn" onclick="selecionarOpcao('auxilio', 'nao', this)">Não</div>
+            </div>
+        </div>
+
+        <!-- FORMULÁRIO DE AUXÍLIO COMPLETO -->
+        <div class="section hidden" id="form-auxilio-dados">
+            <span class="label-question">Dados para Cadastramento:</span>
+            <div class="grid-form">
+                <div class="input-box full">
+                    <label>Nome da Empresa</label>
+                    <input type="text" placeholder="Ex: JurisAccess Lda">
+                </div>
+                <div class="input-box">
+                    <label>NIF da Empresa</label>
+                    <input type="text" placeholder="000000000">
+                </div>
+                <div class="input-box">
+                    <label>Nome do Responsável Legal</label>
+                    <input type="text" placeholder="Nome Completo">
+                </div>
+                <div class="input-box">
+                    <label>Nº do BI</label>
+                    <input type="text" placeholder="000000000LA000">
+                </div>
+                <div class="input-box">
+                    <label>BI em PDF</label>
+                    <input type="file">
+                </div>
+                <div class="input-box">
+                    <label>E-mail de contacto</label>
+                    <input type="email" placeholder="email@empresa.com">
+                </div>
+                <div class="input-box full">
+                    <label>Nº de Telefone</label>
+                    <input type="tel" placeholder="+244 900 000 000">
+                </div>
+            </div>
+            <button class="btn-submit">Enviar Pedido de Auxílio</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function selecionarOpcao(tipo, valor, elemento) {
+        // Remove seleção visual dos irmãos
+        const botoes = elemento.parentNode.querySelectorAll('.option-btn');
+        botoes.forEach(b => b.classList.remove('selected'));
+        elemento.classList.add('selected');
+
+        if (tipo === 'cadastro') {
+            if (valor === 'sim') {
+                document.getElementById('secao-upload').classList.remove('hidden');
+                document.getElementById('secao-auxilio-pergunta').classList.add('hidden');
+                document.getElementById('form-auxilio-dados').classList.add('hidden');
+            } else {
+                document.getElementById('secao-upload').classList.add('hidden');
+                document.getElementById('secao-auxilio-pergunta').classList.remove('hidden');
+            }
+        }
+
+        if (tipo === 'auxilio') {
+            if (valor === 'sim') {
+                document.getElementById('form-auxilio-dados').classList.remove('hidden');
+            } else {
+                document.getElementById('form-auxilio-dados').classList.add('hidden');
+            }
+        }
+    }
+
+    function atualizarNome(input) {
+        const fileName = input.files[0] ? input.files[0].name : "Clique aqui para carregar o ficheiro PDF";
+        document.getElementById('file-name').innerText = fileName;
+    }
+</script>
+
+</body>
+</html>

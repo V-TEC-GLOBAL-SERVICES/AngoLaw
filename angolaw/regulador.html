@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Regulador · JurisAccess</title>
+  <link rel="stylesheet" href="estilos/imports.css" />
+  <link rel="stylesheet" href="estilos/regulador.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <div class="sidebar-overlay"></div>
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+      <span class="sidebar__logo-text">JurisAccess</span>
+    </div>
+    <nav class="sidebar__nav">
+      <p class="sidebar__nav-label">Menu</p>
+      <ul class="sidebar__menu">
+        <li class="sidebar__menu-item"><a href="index.html" class="sidebar__menu-link"><span class="sidebar__menu-icon"><i class="fa-solid fa-house"></i></span><span class="sidebar__menu-text">Início</span></a></li>
+        <li class="sidebar__menu-item"><a href="educacao.html" class="sidebar__menu-link"><span class="sidebar__menu-icon"><i class="fa-solid fa-book-open"></i></span><span class="sidebar__menu-text">Educação Jurídica</span></a></li>
+        <li class="sidebar__menu-item"><a href="documentos.html" class="sidebar__menu-link"><span class="sidebar__menu-icon"><i class="fa-solid fa-file-lines"></i></span><span class="sidebar__menu-text">Documentos</span></a></li>
+        <li class="sidebar__menu-item"><a href="assistente.html" class="sidebar__menu-link"><span class="sidebar__menu-icon"><i class="fa-solid fa-robot"></i></span><span class="sidebar__menu-text">Assistente IA</span></a></li>
+        <li class="sidebar__menu-item"><a href="consultas.html" class="sidebar__menu-link"><span class="sidebar__menu-icon"><i class="fa-solid fa-calendar-check"></i></span><span class="sidebar__menu-text">Consultas</span></a></li>
+        <li class="sidebar__menu-item sidebar__menu-item--active"><a href="regulador.html" class="sidebar__menu-link"><span class="sidebar__menu-icon"><i class="fa-solid fa-shield-halved"></i></span><span class="sidebar__menu-text">Regulador</span></a></li>
+      </ul>
+    </nav>
+    <div class="sidebar__footer">
+      <div class="sidebar__user">
+        <div class="sidebar__user-avatar">JA</div>
+        <div class="sidebar__user-info">
+          <span class="sidebar__user-name">João Antunes</span>
+          <span class="sidebar__user-role">Plano Pro</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN ===== -->
+  <main class="main">
+
+    <header class="topbar">
+      <div class="topbar__left">
+        <button class="topbar__toggle" data-sidebar-toggle><i class="fa-solid fa-bars"></i></button>
+        <div class="topbar__breadcrumb">
+          <h1 class="topbar__title">Regulador</h1>
+          <p class="topbar__subtitle">Conformidade legal e regulatória simplificada</p>
+        </div>
+      </div>
+      <div class="topbar__right">
+        <div class="user-btn">
+          <div class="user-btn__avatar">JA</div>
+          <span class="user-btn__name">João Antunes</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ── Compliance areas ── -->
+    <section class="section">
+      <div class="section__header">
+        <div>
+          <h2 class="section__title">Áreas de Conformidade</h2>
+          <p class="section__subtitle">Monitorize o seu grau de conformidade por área</p>
+        </div>
+      </div>
+
+      <div class="compliance-grid">
+
+        <a href="formularios/fiscal.html" class="compliance-card compliance-card--fiscal" style="text-decoration:none;display:block;cursor:pointer;" title="Aceder ao Roteiro Fiscal">
+          <div style="position:absolute; top:12px; right:12px; background:var(--amber-50,#fffbeb);color:var(--amber-600,#d97706);border:1px solid #fde68a;border-radius:6px;padding:2px 8px;font-size:.7rem;font-weight:700;z-index:1;">Aceder →</div>
+          <div class="compliance-card__icon">
+            <i class="fa-solid fa-coins" style="font-size:1.2rem"></i>
+          </div>
+          <div class="compliance-card__title">Fiscal</div>
+          <div class="compliance-card__desc">Obrigações fiscais perante a AT e entidades reguladoras tributárias.</div>
+          <div class="compliance-card__progress-label">
+            <span>Conformidade</span><span>0%</span>
+          </div>
+          <div class="progress"><div class="progress__fill" style="width:0%;background:linear-gradient(90deg,var(--amber-500),#fbbf24)"></div></div>
+        </a>
+
+        <div class="compliance-card compliance-card--laboral">
+          <div class="compliance-card__icon">
+            <i class="fa-solid fa-people-group" style="font-size:1.2rem"></i>
+          </div>
+          <div class="compliance-card__title">Laboral</div>
+          <div class="compliance-card__desc">Cumprimento do Código do Trabalho e obrigações com a Segurança Social.</div>
+          <div class="compliance-card__progress-label">
+            <span>Conformidade</span><span>0%</span>
+          </div>
+          <div class="progress"><div class="progress__fill" style="width:0%;background:linear-gradient(90deg,var(--blue-500),#60a5fa)"></div></div>
+        </div>
+
+        <div class="compliance-card compliance-card--rgpd">
+          <div class="compliance-card__icon">
+            <i class="fa-solid fa-lock" style="font-size:1.2rem"></i>
+          </div>
+          <div class="compliance-card__title">RGPD</div>
+          <div class="compliance-card__desc">Conformidade com o Regulamento Geral de Proteção de Dados.</div>
+          <div class="compliance-card__progress-label">
+            <span>Conformidade</span><span>0%</span>
+          </div>
+          <div class="progress"><div class="progress__fill" style="width:0%;background:linear-gradient(90deg,var(--purple-500),#a78bfa)"></div></div>
+        </div>
+
+        <div class="compliance-card compliance-card--comercial">
+          <div class="compliance-card__icon">
+            <i class="fa-solid fa-building" style="font-size:1.2rem"></i>
+          </div>
+          <div class="compliance-card__title">Comercial</div>
+          <div class="compliance-card__desc">Registo comercial, licenças e obrigações do Código das Sociedades Comerciais.</div>
+          <div class="compliance-card__progress-label">
+            <span>Conformidade</span><span>0%</span>
+          </div>
+          <div class="progress"><div class="progress__fill" style="width:0%;background:linear-gradient(90deg,var(--green-500),#4ade80)"></div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Deadlines ── -->
+    <section class="section">
+      <div class="section__header">
+        <div>
+          <h2 class="section__title">Prazos Importantes</h2>
+          <p class="section__subtitle">Não perca nenhuma obrigação legal</p>
+        </div>
+      </div>
+
+      <div class="deadlines-list">
+
+        <div class="deadline-item">
+          <div class="deadline-item__date">
+            <div class="deadline-item__day">30</div>
+            <div class="deadline-item__month">Abr</div>
+          </div>
+          <div class="deadline-item__info">
+            <div class="deadline-item__title">Entrega da Declaração de IRS</div>
+            <div class="deadline-item__desc">Prazo final para submissão da declaração de rendimentos do ano anterior. Acesso via Portal das Finanças.</div>
+          </div>
+          <span class="tag tag--red deadline-item__urgency deadline-item__urgency--high">Urgente</span>
+        </div>
+
+        <div class="deadline-item">
+          <div class="deadline-item__date">
+            <div class="deadline-item__day">15</div>
+            <div class="deadline-item__month">Mai</div>
+          </div>
+          <div class="deadline-item__info">
+            <div class="deadline-item__title">Pagamento de Quotizações à Segurança Social</div>
+            <div class="deadline-item__desc">Entrega das declarações mensais de remunerações e pagamento das contribuições de trabalhadores e empresa.</div>
+          </div>
+          <span class="tag tag--amber deadline-item__urgency deadline-item__urgency--med">Em breve</span>
+        </div>
+
+        <div class="deadline-item">
+          <div class="deadline-item__date">
+            <div class="deadline-item__day">31</div>
+            <div class="deadline-item__month">Mai</div>
+          </div>
+          <div class="deadline-item__info">
+            <div class="deadline-item__title">Auditoria Anual de Proteção de Dados</div>
+            <div class="deadline-item__desc">Revisão anual das políticas de privacidade, registos de tratamento e contratos com subcontratantes RGPD.</div>
+          </div>
+          <span class="tag tag--green deadline-item__urgency deadline-item__urgency--low">Normal</span>
+        </div>
+
+        <div class="deadline-item">
+          <div class="deadline-item__date">
+            <div class="deadline-item__day">30</div>
+            <div class="deadline-item__month">Jun</div>
+          </div>
+          <div class="deadline-item__info">
+            <div class="deadline-item__title">Entrega do IRC — Modelo 22</div>
+            <div class="deadline-item__desc">Declaração periódica de rendimentos das pessoas coletivas relativa ao exercício anterior.</div>
+          </div>
+          <span class="tag tag--green deadline-item__urgency deadline-item__urgency--low">Normal</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Checklist + Tasks ── -->
+    <section class="section">
+      <div class="section__header">
+        <div>
+          <h2 class="section__title">Lista de Verificação</h2>
+          <p class="section__subtitle">Complete os itens abaixo para melhorar a sua conformidade</p>
+        </div>
+      </div>
+
+      <div class="regulador-cols">
+
+        <!-- Checklist -->
+        <div class="checklist-section">
+          <div class="checklist-section__header">
+            <span class="checklist-section__title">RGPD — Checklist de Conformidade</span>
+            <span class="checklist-section__progress-text">0 / 8 concluídos</span>
+          </div>
+          <div class="checklist-section__bar">
+            <div class="progress"><div class="progress__fill" style="width:0%"></div></div>
+          </div>
+
+          <div class="check-item">
+            <div class="check-item__box"></div>
+            <span class="check-item__label">Nomear um Encarregado de Proteção de Dados (DPO)</span>
+          </div>
+          <div class="check-item">
+            <div class="check-item__box"></div>
+            <span class="check-item__label">Criar e publicar Política de Privacidade atualizada</span>
+          </div>
+          <div class="check-item">
+            <div class="check-item__box"></div>
+            <span class="check-item__label">Elaborar Registo de Atividades de Tratamento</span>
+          </div>
+          <div class="check-item">
+            <div class="check-item__box"></div>
+            <span class="check-item__label">Implementar mecanismo de consentimento explícito</span>
+          </div>
+          <div class="check-item">
+            <div class="check-item__box"></div>
+            <span class="check-item__label">Assinar contratos com subcontratantes (DPA)</span>
+          </div>
+          <div class="check-item">
+            <div class="check-item__box"></div>
+            <span class="check-item__label">Treinar colaboradores em proteção de dados</span>
+          </div>
+          <div class="check-item">
+            <div class="check-item__box"></div>
+            <span class="check-item__label">Definir procedimento de notificação de violações</span>
+          </div>
+          <div class="check-item">
+            <div class="check-item__box"></div>
+            <span class="check-item__label">Realizar avaliação de impacto (DPIA) se aplicável</span>
+          </div>
+
+          <div style="margin-top:20px">
+            <button class="btn btn--primary">
+              <i class="fa-solid fa-wand-magic-sparkles" style="margin-right:6px"></i>Gerar Relatório de Conformidade
+            </button>
+          </div>
+        </div>
+
+        <!-- Tasks panel -->
+        <div class="tasks-panel">
+          <div class="tasks-panel__title">Tarefas Pendentes</div>
+
+          <div class="task-item">
+            <div class="task-item__dot task-item__dot--fiscal"></div>
+            <div class="task-item__text">Entregar declaração IRS — Portal das Finanças</div>
+            <div class="task-item__due">30 Abr</div>
+          </div>
+          <div class="task-item">
+            <div class="task-item__dot task-item__dot--laboral"></div>
+            <div class="task-item__text">Submeter declaração mensal SS — DMR</div>
+            <div class="task-item__due">15 Mai</div>
+          </div>
+          <div class="task-item">
+            <div class="task-item__dot task-item__dot--rgpd"></div>
+            <div class="task-item__text">Renovar DPA com fornecedor de software</div>
+            <div class="task-item__due">20 Mai</div>
+          </div>
+          <div class="task-item">
+            <div class="task-item__dot task-item__dot--rgpd"></div>
+            <div class="task-item__text">Atualizar Política de Privacidade no site</div>
+            <div class="task-item__due">25 Mai</div>
+          </div>
+          <div class="task-item">
+            <div class="task-item__dot task-item__dot--fiscal"></div>
+            <div class="task-item__text">Preparar Modelo 22 IRC para entrega</div>
+            <div class="task-item__due">30 Jun</div>
+          </div>
+          <div class="task-item">
+            <div class="task-item__dot task-item__dot--comercial"></div>
+            <div class="task-item__text">Renovar alvará de actividade</div>
+            <div class="task-item__due">Ago</div>
+          </div>
+          <div class="task-item">
+            <div class="task-item__dot task-item__dot--laboral"></div>
+            <div class="task-item__text">Actualizar contratos de trabalho (novo CCT)</div>
+            <div class="task-item__due">Set</div>
+          </div>
+
+          <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+            <button class="btn btn--outline btn--full btn--sm">
+              <i class="fa-solid fa-plus" style="margin-right:5px"></i>Adicionar Tarefa
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script src="scripts/main.js"></script>
+</body>
+</html>

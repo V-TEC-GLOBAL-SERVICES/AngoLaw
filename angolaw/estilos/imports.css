@@ -1,0 +1,12 @@
+/* ================================================
+   imports.css — Master CSS Import File
+   Import this single file in every HTML page.
+   ================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+@import 'variables.css';
+@import 'layout.css';
+@import 'aside.css';
+@import 'header.css';
+@import 'components.css';
