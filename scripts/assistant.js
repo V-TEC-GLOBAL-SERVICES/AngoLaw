@@ -18,7 +18,7 @@
 
     rgpd: `**RGPD — Regulamento Geral de Proteção de Dados**\n\nOs seus direitos fundamentais:\n\n• **Direito de acesso** — Pode pedir os dados que uma empresa tem sobre si.\n• **Direito de retificação** — Corrigir dados incorretos.\n• **Direito ao apagamento** — "Direito a ser esquecido".\n• **Direito à portabilidade** — Receber os seus dados em formato legível.\n• **Direito de oposição** — Opor-se ao tratamento para fins de marketing.\n\nPara exercer estes direitos, contacte o encarregado de proteção de dados (DPO) da entidade.\n\nDenúncias podem ser feitas à **CNPD** (Comissão Nacional de Proteção de Dados).`,
 
-    default: `**Olá! Sou o Assistente Jurídico da JurisAccess.**\n\nPosso ajudá-lo com questões sobre:\n\n• Direitos do consumidor\n• Contratos e acordos\n• Impostos e questões fiscais\n• Criação de empresas\n• Arrendamento\n• RGPD e proteção de dados\n\nTente escrever uma dessas palavras-chave ou descreva a sua situação. Para aconselhamento jurídico personalizado, recomendo agendar uma **Consulta** com um dos nossos advogados parceiros.\n\n⚠️ *Este assistente fornece informação geral e não substitui aconselhamento jurídico profissional.*`
+    default: `**Olá! Sou o Assistente Jurídico da AngoLaw.**\n\nPosso ajudá-lo com questões sobre:\n\n• Direitos do consumidor\n• Contratos e acordos\n• Impostos e questões fiscais\n• Criação de empresas\n• Arrendamento\n• RGPD e proteção de dados\n\nTente escrever uma dessas palavras-chave ou descreva a sua situação. Para aconselhamento jurídico personalizado, recomendo agendar uma **Consulta** com um dos nossos advogados parceiros.\n\n⚠️ *Este assistente fornece informação geral e não substitui aconselhamento jurídico profissional.*`
   };
 
   function getResponse(message) {
