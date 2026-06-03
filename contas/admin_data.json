@@ -1,0 +1,45 @@
+{
+  "profile": {
+    "name": "Admin AngoLaw",
+    "role": "Administrador",
+    "email": "admin@angolaw.test",
+    "location": "Luanda, Angola",
+    "phone": "+244 9xx xxx xxx",
+    "bio": "Gerencie o conteúdo do portal com este painel administrativo: publicações, documentos, artigos e playlists."
+  },
+  "publications": [
+    {
+      "id": "pub-1",
+      "url": "https://youtu.be/example1",
+      "title": "Como funciona um contrato de serviço",
+      "type": "Vídeo Educativo",
+      "description": "Explicação passo a passo sobre os principais termos contratuais."
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc-1",
+      "image": "https://via.placeholder.com/120",
+      "title": "Contrato de Prestação de Serviços",
+      "type": "Minuta",
+      "description": "Modelo de contrato que pode ser adaptado a diversas prestações de serviço.",
+      "body": "Cláusulas principais do contrato: objeto, prazos, responsabilidades e penalidades."
+    }
+  ],
+  "articles": [
+    {
+      "id": "art-1",
+      "category": "Direito Civil",
+      "title": "Guia de Mediação Familiar",
+      "description": "Orientações para gerir conflitos familiares de forma amigável e segura."
+    }
+  ],
+  "playlists": [
+    {
+      "id": "playlist-1",
+      "url": "https://youtu.be/example22",
+      "title": "Playlist de Direito Civil",
+      "description": "Coleção de vídeos com conteúdos sobre contratos, família e responsabilidade civil."
+    }
+  ]
+}

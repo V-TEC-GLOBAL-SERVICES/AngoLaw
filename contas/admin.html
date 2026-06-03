@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Administração · AngoLaw</title>
+  <link rel="stylesheet" href="../estilos/imports.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    .admin-panel { display:grid; gap:28px; }
+    .admin-row { display:grid; gap:24px; grid-template-columns: 1fr 1fr; }
+    .admin-card { background:var(--bg-card); border:1px solid var(--border); border-radius:16px; padding:24px; box-shadow:var(--shadow-sm); }
+    .admin-card h3 { margin-top:0; }
+    .field-group { display:grid; gap:14px; }
+    .form-grid { display:grid; gap:16px; grid-template-columns: 1fr 1fr; }
+    .form-grid-3 { display:grid; gap:16px; grid-template-columns: 1fr 1fr 1fr; }
+    .form-grid-full { display:grid; gap:16px; }
+    .form-group { display:flex; flex-direction:column; gap:6px; }
+    .form-group label { font-size:.92rem; color:var(--text-primary); font-weight:600; }
+    .form-group input,
+    .form-group textarea,
+    .form-group select { width:100%; padding:12px 14px; border:1px solid var(--border); border-radius:12px; background:var(--bg); color:var(--text-primary); }
+    .admin-list { display:grid; gap:14px; margin-top:18px; }
+    .list-item { background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:16px; display:grid; gap:10px; }
+    .item-meta { display:flex; flex-wrap:wrap; gap:10px; align-items:center; font-size:.88rem; color:var(--text-muted); }
+    .item-meta span { display:inline-flex; align-items:center; gap:6px; }
+    .item-actions { display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-end; }
+    .item-actions button { padding:8px 12px; border-radius:10px; border:1px solid var(--border); background:transparent; cursor:pointer; }
+    .item-actions button.delete { color:var(--red-600); border-color:rgba(239,68,68,.2); }
+    .item-actions button.view { color:var(--blue-600); }
+    .admin-note { font-size:.9rem; color:var(--text-muted); }
+    .section-subtitle { margin-top:6px; color:var(--text-muted); }
+    .toast { font-size:.95rem; margin-top:14px; }
+    .toast.success { color:var(--green-600); }
+    .toast.error { color:var(--red-600); }
+    .section-stack { display:grid; gap:22px; }
+
+    @media (max-width: 980px) {
+      .admin-row { grid-template-columns:1fr; }
+      .form-grid, .form-grid-3 { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar-overlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-icon">
+        <img src="../Imagens/IMG_4735.PNG" width="70" alt=""></div>
+      <span class="sidebar__logo-text">AngoLaw</span>
+    </div>
+    <nav class="sidebar__nav">
+      <p class="sidebar__nav-label">Menu</p>
+      <ul class="sidebar__menu">
+        <li class="sidebar__menu-item">
+          <a href="../index.html" class="sidebar__menu-link">
+            <span class="sidebar__menu-icon"><i class="fa-solid fa-house"></i></span>
+            <span class="sidebar__menu-text">Início</span>
+          </a>
+        </li>
+        <li class="sidebar__menu-item">
+          <a href="../educacao.html" class="sidebar__menu-link">
+            <span class="sidebar__menu-icon"><i class="fa-solid fa-book-open"></i></span>
+            <span class="sidebar__menu-text">Educação Jurídica</span>
+          </a>
+        </li>
+        <li class="sidebar__menu-item">
+          <a href="../documentos.html" class="sidebar__menu-link">
+            <span class="sidebar__menu-icon"><i class="fa-solid fa-file-lines"></i></span>
+            <span class="sidebar__menu-text">Documentos</span>
+          </a>
+        </li>
+        <li class="sidebar__menu-item">
+          <a href="../assistente.html" class="sidebar__menu-link">
+            <span class="sidebar__menu-icon"><i class="fa-solid fa-robot"></i></span>
+            <span class="sidebar__menu-text">Assistente IA</span>
+          </a>
+        </li>
+        <li class="sidebar__menu-item">
+          <a href="../consultas.html" class="sidebar__menu-link">
+            <span class="sidebar__menu-icon"><i class="fa-solid fa-calendar-check"></i></span>
+            <span class="sidebar__menu-text">Consultas</span>
+          </a>
+        </li>
+        <li class="sidebar__menu-item sidebar__menu-item--active">
+          <a href="admin.html" class="sidebar__menu-link">
+            <span class="sidebar__menu-icon"><i class="fa-solid fa-user-shield"></i></span>
+            <span class="sidebar__menu-text">Administração</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <div class="sidebar__footer">
+      <div class="sidebar__user">
+        <div class="sidebar__user-avatar">AD</div>
+        <div class="sidebar__user-info">
+          <span class="sidebar__user-name">Admin AngoLaw</span>
+          <span class="sidebar__user-role">Administrador</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar__left">
+        <button class="topbar__toggle" data-sidebar-toggle aria-label="Toggle sidebar"><i class="fa-solid fa-bars"></i></button>
+        <div class="topbar__breadcrumb">
+          <h1 class="topbar__title">Painel Administrativo</h1>
+          <p class="topbar__subtitle">Gerencie perfil, publicações, documentos, artigos e playlists.</p>
+        </div>
+      </div>
+      <div class="topbar__right">
+        <div class="search-bar">
+          <i class="fa-solid fa-magnifying-glass" style="color:var(--text-muted);font-size:.85rem"></i>
+          <input type="text" placeholder="Pesquisar..." class="search-bar__input" />
+        </div>
+        <a href="../consultas.html" class="btn btn--primary"><i class="fa-solid fa-calendar-plus"></i> Nova Consulta</a>
+        <div class="user-btn">
+          <div class="user-btn__avatar">AD</div>
+          <span class="user-btn__name">Admin AngoLaw</span>
+        </div>
+      </div>
+    </header>
+
+    <section class="section admin-panel">
+      <div class="admin-card">
+        <div class="section__header">
+          <div>
+            <h2 class="section__title">Perfil Administrativo</h2>
+            <p class="section__subtitle">Atualize os dados do administrador e a descrição do painel.</p>
+          </div>
+        </div>
+        <div class="field-group">
+          <form id="profile-form">
+            <div class="form-grid">
+              <div class="form-group"><label for="admin-name">Nome</label><input id="admin-name" name="name" required /></div>
+              <div class="form-group"><label for="admin-role">Função</label><input id="admin-role" name="role" required /></div>
+              <div class="form-group"><label for="admin-email">Email</label><input id="admin-email" name="email" type="email" required /></div>
+              <div class="form-group"><label for="admin-location">Localização</label><input id="admin-location" name="location" /></div>
+              <div class="form-group"><label for="admin-phone">Contacto</label><input id="admin-phone" name="phone" /></div>
+            </div>
+            <div class="form-group"><label for="admin-bio">Biografia</label><textarea id="admin-bio" name="bio" rows="3"></textarea></div>
+            <div class="item-actions" style="justify-content:flex-start;">
+              <button class="btn btn--primary" type="submit">Guardar Perfil</button>
+            </div>
+            <div id="profile-toast" class="toast"></div>
+          </form>
+        </div>
+      </div>
+
+      <div class="section-stack">
+        <div class="admin-card">
+          <div class="section__header">
+            <div>
+              <h2 class="section__title">Publicações</h2>
+              <p class="section__subtitle">Criar e gerir vídeos publicados no portal.</p>
+            </div>
+          </div>
+          <form id="publication-form">
+            <input type="hidden" id="pub-id" name="id" />
+            <div class="form-grid">
+              <div class="form-group"><label for="pub-url">URL do vídeo</label><input id="pub-url" name="url" required /></div>
+              <div class="form-group"><label for="pub-title">Título</label><input id="pub-title" name="title" required /></div>
+              <div class="form-group"><label for="pub-type">Tipo</label><input id="pub-type" name="type" required /></div>
+              <div class="form-group"><label for="pub-description">Descrição</label><textarea id="pub-description" name="description" rows="2"></textarea></div>
+            </div>
+            <div class="item-actions"><button class="btn btn--primary" type="submit">Adicionar Publicação</button><button type="button" class="btn btn--muted cancel-btn" style="display:none;">Cancelar</button></div>
+            <div id="publication-toast" class="toast"></div>
+          </form>
+          <div id="publication-list" class="admin-list"></div>
+        </div>
+
+        <div class="admin-card">
+          <div class="section__header">
+            <div>
+              <h2 class="section__title">Documentos</h2>
+              <p class="section__subtitle">Criar contratos, modelos e imagens de documentos.</p>
+            </div>
+          </div>
+          <form id="document-form">
+            <input type="hidden" id="doc-id" name="id" />
+            <div class="form-grid">
+              <div class="form-group"><label for="doc-image">URL da imagem</label><input id="doc-image" name="image" /></div>
+              <div class="form-group"><label for="doc-title">Título</label><input id="doc-title" name="title" required /></div>
+              <div class="form-group"><label for="doc-type">Tipo</label><input id="doc-type" name="type" /></div>
+              <div class="form-group"><label for="doc-description">Descrição</label><textarea id="doc-description" name="description" rows="2"></textarea></div>
+            </div>
+            <div class="form-group"><label for="doc-body">Corpo do contrato</label><textarea id="doc-body" name="body" rows="4"></textarea></div>
+            <div class="item-actions"><button class="btn btn--primary" type="submit">Adicionar Documento</button><button type="button" class="btn btn--muted cancel-btn" style="display:none;">Cancelar</button></div>
+            <div id="document-toast" class="toast"></div>
+          </form>
+          <div id="document-list" class="admin-list"></div>
+        </div>
+
+        <div class="admin-card">
+          <div class="section__header">
+            <div>
+              <h2 class="section__title">Artigos</h2>
+              <p class="section__subtitle">Gerir artigos e guias rápidos do site.</p>
+            </div>
+          </div>
+          <form id="article-form">
+            <input type="hidden" id="article-id" name="id" />
+            <div class="form-grid-3">
+              <div class="form-group"><label for="article-category">Categoria</label><input id="article-category" name="category" required /></div>
+              <div class="form-group"><label for="article-title">Título</label><input id="article-title" name="title" required /></div>
+              <div class="form-group"><label for="article-description">Descrição</label><textarea id="article-description" name="description" rows="2"></textarea></div>
+            </div>
+            <div class="item-actions"><button class="btn btn--primary" type="submit">Adicionar Artigo</button><button type="button" class="btn btn--muted cancel-btn" style="display:none;">Cancelar</button></div>
+            <div id="article-toast" class="toast"></div>
+          </form>
+          <div id="article-list" class="admin-list"></div>
+        </div>
+
+        <div class="admin-card">
+          <div class="section__header">
+            <div>
+              <h2 class="section__title">Playlists</h2>
+              <p class="section__subtitle">Organize playlists e coleções de vídeos.</p>
+            </div>
+          </div>
+          <form id="playlist-form">
+            <input type="hidden" id="playlist-id" name="id" />
+            <div class="form-grid">
+              <div class="form-group"><label for="playlist-url">URL do vídeo</label><input id="playlist-url" name="url" required /></div>
+              <div class="form-group"><label for="playlist-title">Título</label><input id="playlist-title" name="title" required /></div>
+              <div class="form-group"><label for="playlist-description">Descrição</label><textarea id="playlist-description" name="description" rows="2"></textarea></div>
+            </div>
+            <div class="item-actions"><button class="btn btn--primary" type="submit">Adicionar Playlist</button><button type="button" class="btn btn--muted cancel-btn" style="display:none;">Cancelar</button></div>
+            <div id="playlist-toast" class="toast"></div>
+          </form>
+          <div id="playlist-list" class="admin-list"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../scripts/main.js"></script>
+  <script>
+    const apiUrl = 'admin_save.php';
+    const dataUrl = 'admin_data.json';
+    let adminData = null;
+    const formMap = {
+      publications: document.getElementById('publication-form'),
+      documents: document.getElementById('document-form'),
+      articles: document.getElementById('article-form'),
+      playlists: document.getElementById('playlist-form')
+    };
+    const toastMap = {
+      publications: 'publication-toast',
+      documents: 'document-toast',
+      articles: 'article-toast',
+      playlists: 'playlist-toast'
+    };
+    const entityFields = {
+      publications: ['url', 'title', 'type', 'description'],
+      documents: ['image', 'title', 'type', 'description', 'body'],
+      articles: ['category', 'title', 'description'],
+      playlists: ['url', 'title', 'description']
+    };
+
+    function showToast(id, message, type = 'success') {
+      const toast = document.getElementById(id);
+      toast.textContent = message;
+      toast.className = 'toast ' + (type === 'success' ? 'success' : 'error');
+      if (message) setTimeout(() => { toast.textContent = ''; toast.className = 'toast'; }, 2800);
+    }
+
+    function setEditState(entity, item) {
+      const form = formMap[entity];
+      if (!form) return;
+      form.dataset.editId = item.id;
+      const idInput = form.querySelector('input[name="id"]');
+      if (idInput) idInput.value = item.id;
+      entityFields[entity].forEach(key => {
+        const input = form.querySelector(`[name="${key}"]`);
+        if (input) input.value = item[key] || '';
+      });
+      const submit = form.querySelector('button[type="submit"]');
+      if (submit) submit.textContent = 'Atualizar';
+      const cancelBtn = form.querySelector('.cancel-btn');
+      if (cancelBtn) cancelBtn.style.display = 'inline-flex';
+      showToast(toastMap[entity], 'Modo edição ativado.', 'success');
+    }
+
+    function clearEditState(entity) {
+      const form = formMap[entity];
+      if (!form) return;
+      form.dataset.editId = '';
+      const idInput = form.querySelector('input[name="id"]');
+      if (idInput) idInput.value = '';
+      form.reset();
+      const submit = form.querySelector('button[type="submit"]');
+      if (submit) {
+        if (entity === 'publications') submit.textContent = 'Adicionar Publicação';
+        if (entity === 'documents') submit.textContent = 'Adicionar Documento';
+        if (entity === 'articles') submit.textContent = 'Adicionar Artigo';
+        if (entity === 'playlists') submit.textContent = 'Adicionar Playlist';
+      }
+      const cancelBtn = form.querySelector('.cancel-btn');
+      if (cancelBtn) cancelBtn.style.display = 'none';
+    }
+
+    async function fetchData() {
+      try {
+        const res = await fetch(dataUrl, { cache: 'no-store' });
+        adminData = await res.json();
+      } catch (error) {
+        console.error(error);
+        showToast('profile-toast', 'Não foi possível carregar os dados.', 'error');
+      }
+    }
+
+    async function fetchData() {
+      try {
+        const res = await fetch(dataUrl, { cache: 'no-store' });
+        adminData = await res.json();
+      } catch (error) {
+        console.error(error);
+        showToast('profile-toast', 'Não foi possível carregar os dados.', 'error');
+      }
+    }
+
+    function renderProfile() {
+      if (!adminData) return;
+      document.getElementById('admin-name').value = adminData.profile.name || '';
+      document.getElementById('admin-role').value = adminData.profile.role || '';
+      document.getElementById('admin-email').value = adminData.profile.email || '';
+      document.getElementById('admin-location').value = adminData.profile.location || '';
+      document.getElementById('admin-phone').value = adminData.profile.phone || '';
+      document.getElementById('admin-bio').value = adminData.profile.bio || '';
+    }
+
+    function buildItemCard(item, entity) {
+      const card = document.createElement('div');
+      card.className = 'list-item';
+      const title = document.createElement('div');
+      title.innerHTML = `<strong>${item.title || item.category || item.url}</strong>`;
+      card.appendChild(title);
+
+      if (item.type) {
+        const meta = document.createElement('div');
+        meta.className = 'item-meta';
+        meta.innerHTML = `<span><i class="fa-solid fa-tag"></i> ${item.type}</span>`;
+        card.appendChild(meta);
+      }
+
+      if (item.category) {
+        const meta = document.createElement('div');
+        meta.className = 'item-meta';
+        meta.innerHTML = `<span><i class="fa-solid fa-layer-group"></i> ${item.category}</span>`;
+        card.appendChild(meta);
+      }
+
+      if (item.url) {
+        const link = document.createElement('div');
+        link.className = 'item-meta';
+        link.innerHTML = `<span><i class="fa-solid fa-link"></i> <a href="${item.url}" target="_blank">Ver URL</a></span>`;
+        card.appendChild(link);
+      }
+
+      if (item.description) {
+        const desc = document.createElement('p');
+        desc.textContent = item.description;
+        card.appendChild(desc);
+      }
+
+      if (item.body) {
+        const body = document.createElement('p');
+        body.textContent = item.body;
+        card.appendChild(body);
+      }
+
+      const actions = document.createElement('div');
+      actions.className = 'item-actions';
+      const editBtn = document.createElement('button');
+      editBtn.type = 'button';
+      editBtn.className = 'view';
+      editBtn.textContent = 'Editar';
+      editBtn.addEventListener('click', () => setEditState(entity, item));
+      const deleteBtn = document.createElement('button');
+      deleteBtn.type = 'button';
+      deleteBtn.className = 'delete';
+      deleteBtn.textContent = 'Eliminar';
+      deleteBtn.addEventListener('click', () => deleteItem(entity, item.id));
+      actions.appendChild(editBtn);
+      actions.appendChild(deleteBtn);
+      card.appendChild(actions);
+      return card;
+    }
+
+    function renderList(entity, listId) {
+      const listNode = document.getElementById(listId);
+      listNode.innerHTML = '';
+      const collection = adminData[entity] || [];
+      if (collection.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'admin-note';
+        empty.textContent = 'Nenhum item encontrado.';
+        listNode.appendChild(empty);
+        return;
+      }
+      collection.forEach(item => listNode.appendChild(buildItemCard(item, entity)));
+    }
+
+    async function saveAdmin(action, entity, payload = {}) {
+      const formData = new FormData();
+      formData.append('action', action);
+      formData.append('entity', entity);
+      Object.entries(payload).forEach(([key, value]) => { formData.append(key, value); });
+      const res = await fetch(apiUrl, { method: 'POST', body: formData });
+      return res.json();
+    }
+
+    async function refresh() {
+      await fetchData();
+      renderProfile();
+      renderList('publications', 'publication-list');
+      renderList('documents', 'document-list');
+      renderList('articles', 'article-list');
+      renderList('playlists', 'playlist-list');
+    }
+
+    async function deleteItem(entity, id) {
+      const result = await saveAdmin('delete', entity, { id });
+      if (result.success) {
+        showToast('profile-toast', 'Item eliminado com sucesso.', 'success');
+        await refresh();
+      } else {
+        showToast('profile-toast', result.error || 'Erro ao eliminar item.', 'error');
+      }
+    }
+
+    document.getElementById('profile-form').addEventListener('submit', async event => {
+      event.preventDefault();
+      const payload = {
+        name: document.getElementById('admin-name').value,
+        role: document.getElementById('admin-role').value,
+        email: document.getElementById('admin-email').value,
+        location: document.getElementById('admin-location').value,
+        phone: document.getElementById('admin-phone').value,
+        bio: document.getElementById('admin-bio').value
+      };
+      const result = await saveAdmin('profile', 'profile', payload);
+      if (result.success) {
+        showToast('profile-toast', 'Perfil guardado com sucesso.');
+        await refresh();
+      } else {
+        showToast('profile-toast', result.error || 'Erro ao guardar perfil.', 'error');
+      }
+    });
+
+    document.getElementById('publication-form').addEventListener('submit', async event => {
+      event.preventDefault();
+      const form = event.target;
+      const editId = form.dataset.editId;
+      const payload = {
+        id: editId || '',
+        url: document.getElementById('pub-url').value,
+        title: document.getElementById('pub-title').value,
+        type: document.getElementById('pub-type').value,
+        description: document.getElementById('pub-description').value
+      };
+      const action = editId ? 'update' : 'add';
+      const result = await saveAdmin(action, 'publications', payload);
+      if (result.success) {
+        showToast('publication-toast', editId ? 'Publicação atualizada.' : 'Publicação adicionada.');
+        clearEditState('publications');
+        await refresh();
+      } else {
+        showToast('publication-toast', result.error || 'Erro ao adicionar.', 'error');
+      }
+    });
+
+    document.getElementById('document-form').addEventListener('submit', async event => {
+      event.preventDefault();
+      const form = event.target;
+      const editId = form.dataset.editId;
+      const payload = {
+        id: editId || '',
+        image: document.getElementById('doc-image').value,
+        title: document.getElementById('doc-title').value,
+        type: document.getElementById('doc-type').value,
+        description: document.getElementById('doc-description').value,
+        body: document.getElementById('doc-body').value
+      };
+      const action = editId ? 'update' : 'add';
+      const result = await saveAdmin(action, 'documents', payload);
+      if (result.success) {
+        showToast('document-toast', editId ? 'Documento atualizado.' : 'Documento adicionado.');
+        clearEditState('documents');
+        await refresh();
+      } else {
+        showToast('document-toast', result.error || 'Erro ao adicionar.', 'error');
+      }
+    });
+
+    document.getElementById('article-form').addEventListener('submit', async event => {
+      event.preventDefault();
+      const form = event.target;
+      const editId = form.dataset.editId;
+      const payload = {
+        id: editId || '',
+        category: document.getElementById('article-category').value,
+        title: document.getElementById('article-title').value,
+        description: document.getElementById('article-description').value
+      };
+      const action = editId ? 'update' : 'add';
+      const result = await saveAdmin(action, 'articles', payload);
+      if (result.success) {
+        showToast('article-toast', editId ? 'Artigo atualizado.' : 'Artigo adicionado.');
+        clearEditState('articles');
+        await refresh();
+      } else {
+        showToast('article-toast', result.error || 'Erro ao adicionar.', 'error');
+      }
+    });
+
+    document.getElementById('playlist-form').addEventListener('submit', async event => {
+      event.preventDefault();
+      const form = event.target;
+      const editId = form.dataset.editId;
+      const payload = {
+        id: editId || '',
+        url: document.getElementById('playlist-url').value,
+        title: document.getElementById('playlist-title').value,
+        description: document.getElementById('playlist-description').value
+      };
+      const action = editId ? 'update' : 'add';
+      const result = await saveAdmin(action, 'playlists', payload);
+      if (result.success) {
+        showToast('playlist-toast', editId ? 'Playlist atualizada.' : 'Playlist adicionada.');
+        clearEditState('playlists');
+        await refresh();
+      } else {
+        showToast('playlist-toast', result.error || 'Erro ao adicionar.', 'error');
+      }
+    });
+
+    document.querySelectorAll('.cancel-btn').forEach(button => {
+      button.addEventListener('click', event => {
+        const form = event.target.closest('form');
+        if (!form) return;
+        const entity = form.id.replace('-form', '') + 's';
+        clearEditState(entity);
+      });
+    });
+
+    refresh();
+  </script>
+</body>
+</html>
