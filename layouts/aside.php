@@ -12,7 +12,7 @@
         <p class="sidebar__nav-label">Menu</p>
         <ul class="sidebar__menu">
             <li class="sidebar__menu-item sidebar__menu-item--active">
-                <a href="?pagina=<?= $_GET['pagina'] ?>&sub=index" class="sidebar__menu-link">
+                <a href="?pagina=<?= $_GET['pagina'] ?>&sub=home" class="sidebar__menu-link">
                     <span class="sidebar__menu-icon"><i class="fa-solid fa-house"></i></span>
                     <span class="sidebar__menu-text">Início</span>
                 </a>
