@@ -85,11 +85,11 @@
     }
 </style>
 
-<?php 
-    # importar o aside
-    include_once 'layouts/aside.php';
-    # importar o preloader
-    include_once 'layouts/preloader.php';
+<?php
+# importar o aside
+include_once 'layouts/aside.php';
+# importar o preloader
+include_once 'layouts/preloader.php';
 ?>
 
 <!-- ===== MAIN ===== -->
@@ -150,7 +150,7 @@
 </main>
 
 <div id="FunctionPHPLogout">
-    <?php echo isset($_GET['logout'])? "<h1>Sessao terminada!</h1>":'' ?>
+    <?php echo isset($_GET['logout']) ? "<h1>Sessao terminada!</h1>" : '' ?>
 </div>
 
 <!-- Ajax -->
@@ -256,7 +256,7 @@
 
         // Adicionamos um marcador para o PHP saber que é uma requisição AJAX POST
         const sep = url.includes('?') ? '&' : '?';
-        const urlFetch = `${url}${sep}&logout=true`;
+        const urlFetch = `${url}${sep}logout=true`;
 
         fetch(urlFetch, {
                 method: 'GET',
@@ -279,10 +279,22 @@
                 if (novoConteudo && areaAtual) {
                     // Usamos innerHTML para manter os event listeners da div pai ou 
                     // replaceWith se quisermos substituir o container inteiro.
-                    areaAtual.innerHTML = novoConteudo.innerHTML;
-                    //areaAtual.replaceWith(novoConteudo);
+                    //areaAtual.innerHTML = novoConteudo.innerHTML;
+                    areaAtual.innerHTML = '';
+                    areaAtual.replaceWith(novoConteudo);
 
                     localStorage.clear();
+
+                    // Lógica de extração de parâmetros
+                    const urlParts = urlFetch.split('?');
+                    const params = new URLSearchParams(urlParts.length > 1 ? urlParts[1] : "");
+                    const section = params.get('section') || 'home';
+
+                    // Atualiza histórico e interface
+                    history.pushState({
+                        path: urlFetch,
+                        section: section
+                    }, "", urlFetch);
 
                     // Log opcional para debug (pode remover depois)
                     console.log('Sessao terminada às ' + new Date().toLocaleTimeString());
@@ -306,7 +318,7 @@
         // Controle da classe Active (se o clique foi no menu inferior)
         const element = document.getElementById(sessionStorage.getItem('active') ?? null); //.closest('li')??null;
         if (element) {
-            document.querySelectorAll('.sidebar-nav a').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('nav a').forEach(item => item.classList.remove('active'));
             element.classList.add('active');
         }
     }

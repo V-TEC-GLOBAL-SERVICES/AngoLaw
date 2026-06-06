@@ -1,8 +1,14 @@
 <!-- Pagina de login e cadastro -->
 
- <?php
-  echo isset($_GET['sub'])? "<script>switchTab('register')</script>":'';
- ?>
+<?php
+
+# validar TOKEN
+isset($_POST['login']) ? login($connect) : '';
+isset($_POST['register']) ? setterUser($connect) : '';
+
+$validate = $_SESSION[session_id()]['csrf_token'] ?? null;
+
+?>
 
 <link rel="stylesheet" href="estilos/auth.css" />
 
@@ -23,26 +29,12 @@
 
   <!-- Tab switcher -->
   <div class="auth-tabs" role="tablist">
-    <button
-      class="auth-tab"
-      id="tab-login"
-      role="tab"
-      aria-selected="false"
-      onclick="switchTab('login')">
-      Entrar
-    </button>
-    <button
-      class="auth-tab auth-tab--active"
-      id="tab-register"
-      role="tab"
-      aria-selected="true"
-      onclick="switchTab('register')">
-      Registar
-    </button>
+    <button class="auth-tab <?= ($_GET['sub'] ?? '') == 'Entrar' ? 'auth-tab--active' : '' ?>" id="tab-login" role="tab" aria-selected="false" onclick="switchTab('login')"> Entrar </button>
+    <button class="auth-tab <?= ($_GET['sub'] ?? '') != 'Entrar' ? 'auth-tab--active' : '' ?>" id="tab-register" role="tab" aria-selected="true" onclick="switchTab('register')"> Registar </button>
   </div>
 
   <!-- ===== LOGIN PANEL ===== -->
-  <div class="auth-panel" id="panel-login" role="tabpanel">
+  <form method="post" class="auth-panel <?= (($_GET['sub'] ?? '') == 'Entrar') ? 'auth-panel auth-panel--active' : '' ?>" id="panel-login" role="tabpanel">
     <div class="error-msg" id="login-error">
       <i class="fa-solid fa-circle-exclamation"></i>
       <span>Email ou palavra-passe incorretos. Tente novamente.</span>
@@ -52,11 +44,7 @@
       <label for="login-email">Email</label>
       <div class="input-wrap">
         <i class="fa-solid fa-envelope input-wrap__icon"></i>
-        <input
-          type="email"
-          id="login-email"
-          placeholder="seu@email.com"
-          autocomplete="email" />
+        <input type="email" name="email" id="login-email" placeholder="seu@vconnect.com" autocomplete="email" required/>
       </div>
     </div>
 
@@ -64,18 +52,8 @@
       <label for="login-pwd">Palavra-passe</label>
       <div class="input-wrap">
         <i class="fa-solid fa-lock input-wrap__icon"></i>
-        <input
-          type="password"
-          id="login-pwd"
-          placeholder="A sua palavra-passe"
-          autocomplete="current-password" />
-        <button
-          class="pwd-toggle"
-          type="button"
-          onclick="togglePwd('login-pwd', this)"
-          aria-label="Mostrar palavra-passe">
-          <i class="fa-solid fa-eye"></i>
-        </button>
+        <input type="password" name="passe" id="login-pwd" placeholder="A sua palavra-passe" autocomplete="current-password" required/>
+        <button class="pwd-toggle" type="button" onclick="togglePwd('login-pwd', this)" aria-label="Mostrar palavra-passe"> <i class="fa-solid fa-eye"></i> </button>
       </div>
     </div>
 
@@ -83,7 +61,7 @@
       <a href="#" class="forgot-link">Esqueceu a palavra-passe?</a>
     </div>
 
-    <button class="btn-submit" onclick="handleLogin()">
+    <button type="submit" class="btn-submit" name="login" value="<?= $validate ?>" onclick="handleLogin()">
       <i class="fa-solid fa-right-to-bracket"></i> Entrar na conta
     </button>
 
@@ -91,22 +69,16 @@
 
     <div class="social-btns">
       <button class="btn-social">
-        <i class="fa-brands fa-google" style="color: #4285f4"></i> Google
-      </button>
-      <button class="btn-social">
-        <i class="fa-brands fa-linkedin" style="color: #0077b5"></i> LinkedIn
+        <i class="fa-brands fa-google" style="color: #4285f4"></i> V-CONNECT
       </button>
     </div>
-  </div>
+  </form>
 
   <!-- ===== REGISTER PANEL ===== -->
-  <div
-    class="auth-panel auth-panel--active"
-    id="panel-register"
-    role="tabpanel">
+  <form method="post" class="auth-panel <?= (($_GET['sub'] ?? '') != 'Entrar') ? 'auth-panel auth-panel--active' : '' ?>" id="panel-register" role="tabpanel">
     <div class="success-msg" id="register-success">
       <i class="fa-solid fa-circle-check"></i>
-      <span>Conta criada com sucesso! A redirecionar…</span>
+      <span>Conta criada com sucesso!</span>
     </div>
 
     <div class="error-msg" id="register-error">
@@ -119,12 +91,7 @@
       <label for="reg-name">Nome completo</label>
       <div class="input-wrap">
         <i class="fa-solid fa-user input-wrap__icon"></i>
-        <input
-          type="text"
-          id="reg-name"
-          placeholder="O seu nome"
-          autocomplete="name"
-          oninput="validateName(this)" />
+        <input type="text" name="nome" id="reg-name" placeholder="O seu nome" autocomplete="name" oninput="validateName(this)" required/>
       </div>
     </div>
 
@@ -133,16 +100,8 @@
       <label for="reg-email">Email</label>
       <div class="input-wrap">
         <i class="fa-solid fa-envelope input-wrap__icon"></i>
-        <input
-          type="email"
-          id="reg-email"
-          placeholder="seu@email.com"
-          autocomplete="email"
-          oninput="validateEmail(this)" />
-        <i
-          class="fa-solid fa-circle-check input-wrap__suffix"
-          id="email-check"
-          style="display: none; color: var(--green-500)"></i>
+        <input type="email" name="email" id="reg-email" placeholder="seu@email.com" autocomplete="email" oninput="validateEmail(this)" required/>
+        <i class="fa-solid fa-circle-check input-wrap__suffix" id="email-check" style="display: none; color: var(--green-500)"></i>
       </div>
     </div>
 
@@ -151,18 +110,8 @@
       <label for="reg-pwd">Palavra-passe</label>
       <div class="input-wrap">
         <i class="fa-solid fa-lock input-wrap__icon"></i>
-        <input
-          type="password"
-          id="reg-pwd"
-          placeholder="Mín. 6 caracteres"
-          autocomplete="new-password"
-          oninput="checkStrength(this)" />
-        <button
-          class="pwd-toggle"
-          type="button"
-          onclick="togglePwd('reg-pwd', this)"
-          aria-label="Mostrar palavra-passe">
-          <i class="fa-solid fa-eye"></i>
+        <input type="password" name="senha" id="reg-pwd" placeholder="Mín. 6 caracteres" autocomplete="new-password" oninput="checkStrength(this)" required/>
+        <button class="pwd-toggle" type="button" onclick="togglePwd('reg-pwd', this)" aria-label="Mostrar palavra-passe"> <i class="fa-solid fa-eye"></i>
         </button>
       </div>
       <!-- Password strength bars -->
@@ -177,14 +126,14 @@
 
     <!-- Termos -->
     <div class="check-row">
-      <input type="checkbox" id="reg-terms" />
+      <input type="checkbox" id="reg-terms" name="termos" value="sim" required/>
       <label for="reg-terms">
         Aceito os <a href="#">Termos de Serviço</a> e a
         <a href="#">Política de Privacidade</a> da AngoLaw.
       </label>
     </div>
 
-    <button class="btn-submit" onclick="handleRegister()">
+    <button class="btn-submit" name="register" type="submit" value="1">
       <i class="fa-solid fa-user-plus"></i> Criar conta
     </button>
 
@@ -192,23 +141,15 @@
 
     <div class="social-btns">
       <button class="btn-social">
-        <i class="fa-brands fa-google" style="color: #ea4335"></i> Google
-      </button>
-      <button class="btn-social">
-        <i class="fa-brands fa-linkedin" style="color: #0077b5"></i> LinkedIn
+        <i class="fa-brands fa-google" style="color: #ea4335"></i> V-CONNECT
       </button>
     </div>
-  </div>
+  </form>
 
   <!-- Footer note -->
   <p class="auth-card__footer-note" id="auth-footer-note">
     Já tem conta?
-    <a
-      href="#"
-      onclick="
-        switchTab('login');
-        return false;
-      ">Entrar</a>
+    <a href="#" onclick="switchTab('login');return false;">Entrar</a>
   </p>
 </div>
 
@@ -307,7 +248,9 @@
       }
     });
 
-    const labels = ["", "Fraca", "Razoável", "Boa", "Forte"];
+    //alert(score);
+
+    const labels = ["Facíl", "Fraca", "Razoável", "Boa", "Forte"];
     label.textContent = val.length > 0 ? labels[score] || "Forte" : "";
     label.style.color =
       score <= 1 ?
@@ -339,16 +282,7 @@
 
     setTimeout(() => {
       btn.disabled = false;
-      btn.innerHTML =
-        '<i class="fa-solid fa-right-to-bracket"></i> Entrar na conta';
-      // Demo: any valid-looking email logs in
-      if (email.includes("@") && pwd.length >= 4) {
-        window.location.href = "index.html";
-      } else {
-        errEl.querySelector("span").textContent =
-          "Email ou palavra-passe incorretos.";
-        errEl.classList.add("show");
-      }
+      btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Entrar na conta';
     }, 1000);
   }
 
@@ -399,22 +333,12 @@
       btn.disabled = false;
       btn.innerHTML = '<i class="fa-solid fa-user-plus"></i> Criar conta';
       successEl.classList.add("show");
-      setTimeout(() => {
-        window.location.href = "index.html";
-      }, 1800);
+      // setTimeout(() => {
+      //   window.location.href = "index.html";
+      // }, 1800);
     }, 1200);
   }
 
   /* ── Init: check URL hash ── */
-  if (window.location.hash === "#login") switchTab("login");
-
-  /* ── Enter key support ── */
-  document.addEventListener("keydown", (e) => {
-    if (e.key !== "Enter") return;
-    const loginActive = document
-      .getElementById("panel-login")
-      .classList.contains("auth-panel--active");
-    if (loginActive) handleLogin();
-    else handleRegister();
-  });
+  //if (window.location.hash === "sub=Entrar") switchTab("login");
 </script>

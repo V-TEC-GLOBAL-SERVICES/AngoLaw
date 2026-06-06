@@ -112,13 +112,13 @@
   color: rgba(255,255,255,.85);
 }
 
-.sidebar__menu-item--active .sidebar__menu-link {
+ .sidebar__menu-link.active {
   background: rgba(201,168,76,.15);
   color: var(--accent-gold-light);
   font-weight: 500;
 }
 
-.sidebar__menu-item--active .sidebar__menu-icon { color: var(--accent-gold); }
+ .sidebar__menu-link.active .sidebar__menu-icon { color: var(--accent-gold); }
 
 .sidebar__menu-icon {
   display: grid;

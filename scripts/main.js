@@ -58,5 +58,4 @@
       link.closest('.sidebar__menu-item')?.classList.add('sidebar__menu-item--active');
     }
   });
-
 })();
