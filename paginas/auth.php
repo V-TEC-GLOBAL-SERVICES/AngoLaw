@@ -52,7 +52,7 @@ $validate = $_SESSION[session_id()]['csrf_token'] ?? null;
       <label for="login-pwd">Palavra-passe</label>
       <div class="input-wrap">
         <i class="fa-solid fa-lock input-wrap__icon"></i>
-        <input type="password" name="passe" id="login-pwd" placeholder="A sua palavra-passe" autocomplete="current-password" required/>
+        <input type="password" name="senha" id="login-pwd" placeholder="A sua palavra-passe" autocomplete="current-password" required/>
         <button class="pwd-toggle" type="button" onclick="togglePwd('login-pwd', this)" aria-label="Mostrar palavra-passe"> <i class="fa-solid fa-eye"></i> </button>
       </div>
     </div>
@@ -61,7 +61,7 @@ $validate = $_SESSION[session_id()]['csrf_token'] ?? null;
       <a href="#" class="forgot-link">Esqueceu a palavra-passe?</a>
     </div>
 
-    <button type="submit" class="btn-submit" name="login" value="<?= $validate ?>" onclick="handleLogin()">
+    <button type="submit" class="btn-submit" name="login">
       <i class="fa-solid fa-right-to-bracket"></i> Entrar na conta
     </button>
 

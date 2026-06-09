@@ -67,7 +67,7 @@ session_start();
   if (isset($_GET['pagina']) && $_GET['pagina'] == 'Auth') {
     include_once 'api/query.php';
     include_once 'paginas/auth.php';
-  } else if (isset($_GET['pagina'], $_SESSION[$sessao]) && $_GET['pagina'] == $_SESSION[$sessao]['acesso']) {
+  } else if (isset($_GET['pagina'], $sessao, $_SESSION[$sessao], $_SESSION[$sessao]['acesso']) && $_GET['pagina'] == strtolower($_SESSION[$sessao]['acesso']) && $_SESSION[$sessao]['sessao'] == $sessao) {
     include_once 'api/query.php';
     include_once 'paginas/main.php';
   } else {

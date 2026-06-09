@@ -12,8 +12,8 @@
             <input type="text" placeholder="Pesquisar modelos..." class="search-bar__input" />
         </div>
         <div class="user-btn">
-            <div class="user-btn__avatar">JA</div>
-            <span class="user-btn__name">João Antunes</span>
+            <div class="user-btn__avatar"><?= str_split($user['nome'])['0'] ?></div>
+            <span class="user-btn__name"><?= $user['nome'] ?></span>
         </div>
     </div>
 </header>

@@ -159,7 +159,32 @@
       grid-template-columns: 1fr;
     }
   }
+
+  /* Estilo para a área de pré-visualização */
+  #preview-container {
+    margin-top: 15px;
+    text-align: center;
+    display: none;
+    /* Escondido até que uma imagem seja selecionada */
+  }
+
+  #preview-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+  }
 </style>
+
+<?php
+//var_dump($_SESSION[session_id()]);
+# atualizar dados
+isset($_POST['admin-perfil']) ? updateUsuario($user, $connect) : '';
+isset($_POST['admin-publicar']) ? setterPublicacao($user, $connect) : '';
+isset($_POST['admin-documento']) ? setterDocumento($user, $connect) : '';
+
+$dados = buscaUnica("SELECT * FROM `usuarios` WHERE `id`='{$user['id']}'", $connect);
+?>
 
 <section class="section admin-panel">
   <div class="admin-card">
@@ -172,31 +197,43 @@
       </div>
     </div>
     <div class="field-group">
-      <form id="profile-form">
+      <form method="post" id="profile-form">
         <div class="form-grid">
           <div class="form-group">
-            <label for="admin-name">Nome</label><input id="admin-name" name="name" required />
+            <label for="admin-name">Nome</label>
+            <input id="admin-name" name="nome" value="<?= $dados['nome'] ?? '' ?>" required />
           </div>
           <div class="form-group">
-            <label for="admin-role">Função</label><input id="admin-role" name="role" required />
+            <label for="admin-genero">Função</label>
+            <select name="genero" id="admin-genero" required>
+              <option value="Masculino" <?= ($dados['genero'] ?? '') == 'Masculino' ? 'selected' : '' ?>>Masculino</option>
+              <option value="Feminino" <?= ($dados['genero'] ?? '') == 'Feminino' ? 'selected' : '' ?>>Feminino</option>
+            </select>
           </div>
           <div class="form-group">
-            <label for="admin-email">Email</label><input id="admin-email" name="email" type="email" required />
+            <label for="admin-email">Email</label>
+            <input id="admin-email" name="email" type="email" value="<?= $dados['email'] ?? '' ?>" required />
           </div>
           <div class="form-group">
-            <label for="admin-location">Localização</label><input id="admin-location" name="location" />
+            <label for="admin-location">Localização</label>
+            <input id="admin-location" type="text" name="localizacao" value="<?= $dados['localizacao'] ?? '' ?>" />
           </div>
           <div class="form-group">
-            <label for="admin-phone">Contacto</label><input id="admin-phone" name="phone" />
+            <label for="admin-phone">Contacto</label>
+            <input id="admin-phone" type="tel" name="contacto" value="<?= $dados['contacto'] ?? '' ?>" />
+          </div>
+          <div class="form-group">
+            <label for="admin-phone">Nascimento</label>
+            <input id="admin-phone" type="date" name="nascimento" value="<?= $dados['nascimento'] ?? '' ?>" />
           </div>
         </div>
         <div class="form-group">
-          <label for="admin-bio">Biografia</label><textarea id="admin-bio" name="bio" rows="3"></textarea>
+          <label for="admin-bio">Biografia</label>
+          <textarea id="admin-bio" name="biografia" rows="3"><?= $dados['biografia'] ?? '' ?></textarea>
         </div>
-        <div class="item-actions" style="justify-content: flex-start">
-          <button class="btn btn--primary" type="submit">Guardar Perfil</button>
+        <div class="item-actions" style="justify-content: flex-start; margin-top: 1.5rem;">
+          <button class="btn btn--primary" type="submit" name="admin-perfil" id="admin-perfil" value="1">Guardar Perfil</button>
         </div>
-        <div id="profile-toast" class="toast"></div>
       </form>
     </div>
   </div>
@@ -211,43 +248,46 @@
           </p>
         </div>
       </div>
-      <form id="publication-form">
-        <input type="hidden" id="pub-id" name="id" />
+      <form method="post" id="publication-form">
         <div class="form-grid">
           <div class="form-group">
-            <label for="pub-url">URL do vídeo</label><input id="pub-url" name="url" required />
+            <label for="pub-url">URL do vídeo</label>
+            <input id="pub-url" name="url" required />
           </div>
           <div class="form-group">
-            <label for="pub-title">Título</label><input id="pub-title" name="title" required />
+            <label for="pub-title">Título</label>
+            <input id="pub-title" name="titulo" required />
           </div>
           <div class="form-group">
-            <label for="pub-type">Tipo</label><input id="pub-type" name="type" required />
+            <label for="pub-type">Tipo</label>
+            <input id="pub-type" name="tipo" required />
           </div>
           <div class="form-group">
-            <label for="pub-description">Descrição</label><textarea
-              id="pub-description"
-              name="description"
-              rows="2"></textarea>
+            <label for="pub-description">Descrição</label>
+            <textarea id="pub-description" name="descricao" rows="2"></textarea>
           </div>
         </div>
         <div class="item-actions">
-          <button class="btn btn--primary" type="submit">
-            Adicionar Publicação</button><button
-            type="button"
-            class="btn btn--muted cancel-btn"
-            style="display: none">
-            Cancelar
-          </button>
+          <button class="btn btn--primary" type="submit" name="admin-publicar" value="1">Adicionar Publicação</button>
+          <button type="reset" class="btn btn--muted cancel-btn">Cancelar</button>
         </div>
-        <div id="publication-toast" class="toast"></div>
       </form>
       <div id="publication-list" class="admin-list">
         <div class="list-item">
-          <div><strong>Como funciona um contrato de serviço</strong></div>
-          <div class="item-meta"><span><i class="fa-solid fa-tag"></i> Vídeo Educativo</span></div>
-          <div class="item-meta"><span><i class="fa-solid fa-link"></i> <a href="https://youtu.be/example1" target="_blank">Ver URL</a></span></div>
+          <div>
+            <strong>Como funciona um contrato de serviço</strong>
+          </div>
+          <div class="item-meta">
+            <span><i class="fa-solid fa-tag"></i> Vídeo Educativo</span>
+          </div>
+          <div class="item-meta">
+            <span><i class="fa-solid fa-link"></i>
+              <a href="https://youtu.be/example1" target="_blank">Ver URL</a></span>
+          </div>
           <p>Explicação passo a passo sobre os principais termos contratuais.</p>
-          <div class="item-actions"><button type="button" class="view">Editar</button><button type="button" class="delete">Eliminar</button></div>
+          <div class="item-actions">
+            <button type="button" class="view">Editar</button><button type="button" class="delete">Eliminar</button>
+          </div>
         </div>
       </div>
     </div>
@@ -261,39 +301,39 @@
           </p>
         </div>
       </div>
-      <form id="document-form">
-        <input type="hidden" id="doc-id" name="id" />
+      <form id="document-form" method="post" enctype="multipart/form-data">
+        <div id="preview-container">
+          <p>Pré-visualização:</p>
+          <img id="preview-image" src="" alt="Pré-visualização da imagem">
+        </div>
         <div class="form-grid">
           <div class="form-group">
-            <label for="doc-image">URL da imagem</label><input id="doc-image" name="image" />
+            <label for="doc-image">imagem</label>
+            <input name="imagem" id="imagem" type="file" accept=".jpg, .jpeg, .png, .gif, .webp, .svg, image/jpeg, image/png, image/gif, image/webp, image/svg+xml" required />
           </div>
           <div class="form-group">
-            <label for="doc-title">Título</label><input id="doc-title" name="title" required />
+            <label for="doc-title">Título</label>
+            <input id="doc-title" name="titulo" required />
           </div>
           <div class="form-group">
-            <label for="doc-type">Tipo</label><input id="doc-type" name="type" />
+            <label for="doc-type">Tipo</label>
+            <input id="doc-type" name="tipo" required />
           </div>
           <div class="form-group">
-            <label for="doc-description">Descrição</label><textarea
-              id="doc-description"
-              name="description"
-              rows="2"></textarea>
+            <label for="doc-description">Descrição</label>
+            <textarea id="doc-description" name="descricao" rows="2" required></textarea>
           </div>
         </div>
         <div class="form-group">
-          <label for="doc-body">Corpo do contrato</label><textarea id="doc-body" name="body" rows="4"></textarea>
+          <label for="doc-body">Documento</label>
+          <input type="file" name="documento" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt" required>
         </div>
         <div class="item-actions">
-          <button class="btn btn--primary" type="submit">
-            Adicionar Documento</button><button
-            type="button"
-            class="btn btn--muted cancel-btn"
-            style="display: none">
-            Cancelar
-          </button>
+          <button class="btn btn--primary" type="submit" name="admin-documento" value="1" id="admin-documento">Adicionar Documento</button>
+          <button type="button" class="btn btn--muted cancel-btn">Cancelar</button>
         </div>
-        <div id="document-toast" class="toast"></div>
       </form>
+
       <div id="document-list" class="admin-list">
         <div><strong>Contrato de Prestação de Serviços</strong></div>
         <div class="item-meta"><span><i class="fa-solid fa-tag"></i> Minuta</span></div>
@@ -313,32 +353,26 @@
         </div>
       </div>
       <form id="article-form">
-        <input type="hidden" id="article-id" name="id" />
         <div class="form-grid-3">
           <div class="form-group">
-            <label for="article-category">Categoria</label><input id="article-category" name="category" required />
+            <label for="article-category">Categoria</label>
+            <input id="article-category" name="categoria" required />
           </div>
           <div class="form-group">
-            <label for="article-title">Título</label><input id="article-title" name="title" required />
+            <label for="article-title">Título</label>
+            <input id="article-title" name="titulo" required />
           </div>
           <div class="form-group">
-            <label for="article-description">Descrição</label><textarea
-              id="article-description"
-              name="description"
-              rows="2"></textarea>
+            <label for="article-description">Descrição</label>
+            <textarea id="article-description" name="descricao" rows="2"></textarea>
           </div>
         </div>
         <div class="item-actions">
-          <button class="btn btn--primary" type="submit">
-            Adicionar Artigo</button><button
-            type="button"
-            class="btn btn--muted cancel-btn"
-            style="display: none">
-            Cancelar
-          </button>
+          <button class="btn btn--primary" type="submit" id="admin-artigo" name="admin-artigo" value="1">Adicionar Artigo</button>
+          <button type="reset" class="btn btn--muted cancel-btn" style="margin-top: 1.5rem;">Cancelar</button>
         </div>
-        <div id="article-toast" class="toast"></div>
       </form>
+
       <div id="article-list" class="admin-list">
         <div><strong>Guia de Mediação Familiar</strong></div>
         <div class="item-meta"><span><i class="fa-solid fa-layer-group"></i> Direito Civil</span></div>
@@ -357,32 +391,26 @@
         </div>
       </div>
       <form id="playlist-form">
-        <input type="hidden" id="playlist-id" name="id" />
         <div class="form-grid">
           <div class="form-group">
-            <label for="playlist-url">URL do vídeo</label><input id="playlist-url" name="url" required />
+            <label for="playlist-url">URL do vídeo</label>
+            <input id="playlist-url" name="url" required />
           </div>
           <div class="form-group">
-            <label for="playlist-title">Título</label><input id="playlist-title" name="title" required />
+            <label for="playlist-title">Título</label>
+            <input id="playlist-title" name="titulo" required />
           </div>
           <div class="form-group">
-            <label for="playlist-description">Descrição</label><textarea
-              id="playlist-description"
-              name="description"
-              rows="2"></textarea>
+            <label for="playlist-description">Descrição</label>
+            <textarea id="playlist-description" name="description" rows="2"></textarea>
           </div>
         </div>
         <div class="item-actions">
-          <button class="btn btn--primary" type="submit">
-            Adicionar Playlist</button><button
-            type="button"
-            class="btn btn--muted cancel-btn"
-            style="display: none">
-            Cancelar
-          </button>
+          <button class="btn btn--primary" type="submit" name="admin-playlist" id="admin-playlist" value="1">Adicionar Playlist</button>
+          <button type="reset" class="btn btn--muted cancel-btn" style="margin-top: 1.5rem;">Cancelar</button>
         </div>
-        <div id="playlist-toast" class="toast"></div>
       </form>
+
       <div id="playlist-list" class="admin-list">
         <div><strong>Playlist de Direito Civil</strong></div>
         <div class="item-meta"><span><i class="fa-solid fa-link"></i> <a href="https://youtu.be/example22" target="_blank">Ver URL</a></span></div>
@@ -394,73 +422,32 @@
 </section>
 
 <script src="scripts/main.js"></script>
+
 <script>
-  const apiUrl = "contas/admin_save.php";
-  const dataUrl = "contas/admin_data.json";
-  let adminData = null;
-  const formMap = {
-    publications: document.getElementById("publication-form"),
-    documents: document.getElementById("document-form"),
-    articles: document.getElementById("article-form"),
-    playlists: document.getElementById("playlist-form"),
-  };
-  const toastMap = {
-    publications: "publication-toast",
-    documents: "document-toast",
-    articles: "article-toast",
-    playlists: "playlist-toast",
-  };
-  const entityFields = {
-    publications: ["url", "title", "type", "description"],
-    documents: ["image", "title", "type", "description", "body"],
-    articles: ["category", "title", "description"],
-    playlists: ["url", "title", "description"],
-  };
+  // Script para criar a pré-visualização da imagem selecionada
+  var inputImagem = document.getElementById('imagem');
+  var previewContainer = document.getElementById('preview-container');
+  var previewImage = document.getElementById('preview-image');
 
-  function showToast(id, message, type = "success") {
-    const toast = document.getElementById(id);
-    toast.textContent = message;
-    toast.className = "toast " + (type === "success" ? "success" : "error");
-    if (message)
-      setTimeout(() => {
-        toast.textContent = "";
-        toast.className = "toast";
-      }, 2800);
-  }
+  inputImagem.addEventListener('change', function(event) {
+    var arquivo = event.target.files[0];
 
-  function setEditState(entity, item) {
-    const form = formMap[entity];
-    if (!form) return;
-    form.dataset.editId = item.id;
-    const idInput = form.querySelector('input[name="id"]');
-    if (idInput) idInput.value = item.id;
-    entityFields[entity].forEach((key) => {
-      const input = form.querySelector(`[name="${key}"]`);
-      if (input) input.value = item[key] || "";
-    });
-    const submit = form.querySelector('button[type="submit"]');
-    if (submit) submit.textContent = "Atualizar";
-    const cancelBtn = form.querySelector(".cancel-btn");
-    if (cancelBtn) cancelBtn.style.display = "inline-flex";
-    showToast(toastMap[entity], "Modo edição ativado.", "success");
-  }
+    if (arquivo) {
+      // Cria um URL temporário para o arquivo selecionado
+      var objectURL = URL.createObjectURL(arquivo);
 
-  function clearEditState(entity) {
-    const form = formMap[entity];
-    if (!form) return;
-    form.dataset.editId = "";
-    const idInput = form.querySelector('input[name="id"]');
-    if (idInput) idInput.value = "";
-    form.reset();
-    const submit = form.querySelector('button[type="submit"]');
-    if (submit) {
-      if (entity === "publications")
-        submit.textContent = "Adicionar Publicação";
-      if (entity === "documents") submit.textContent = "Adicionar Documento";
-      if (entity === "articles") submit.textContent = "Adicionar Artigo";
-      if (entity === "playlists") submit.textContent = "Adicionar Playlist";
+      // Define a fonte da imagem para o URL gerado e mostra o container
+      previewImage.src = objectURL;
+      previewContainer.style.display = 'block';
+
+      // Libera a memória quando a imagem terminar de carregar
+      previewImage.onload = function() {
+        URL.revokeObjectURL(previewImage.src);
+      }
+    } else {
+      // Esconde a pré-visualização se nenhum arquivo for selecionado
+      previewContainer.style.display = 'none';
+      previewImage.src = '';
     }
-    const cancelBtn = form.querySelector(".cancel-btn");
-    if (cancelBtn) cancelBtn.style.display = "none";
-  }
+  });
 </script>

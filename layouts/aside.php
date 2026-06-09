@@ -66,7 +66,7 @@
                 </a>
             </li>
             <li class="sidebar__menu-item">
-                <div id="sair" class="sidebar__menu-link" onclick="logout()">
+                <div onclick="logout('index.php?pagina=<?= $_GET['pagina'] ?>&sub=sair')" id="sair" class="sidebar__menu-link">
                     <span class="sidebar__menu-icon"><i class="fa-solid fa-close"></i></span>
                     <span class="sidebar__menu-text">sair</span>
                 </div>
@@ -75,10 +75,10 @@
     </nav>
     <div class="sidebar__footer">
         <div class="sidebar__user">
-            <div class="sidebar__user-avatar">JA</div>
+            <div class="sidebar__user-avatar"><?= str_split($user['nome'])['0']??'' ?></div>
             <div class="sidebar__user-info">
-                <span class="sidebar__user-name">João Antunes</span>
-                <span class="sidebar__user-role">Plano Pro</span>
+                <span class="sidebar__user-name"><?= $user['nome']??'' ?></span>
+                <span class="sidebar__user-role"><?= $user['acesso']??'' ?></span>
             </div>
         </div>
     </div>

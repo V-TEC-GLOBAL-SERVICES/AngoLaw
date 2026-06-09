@@ -49,7 +49,7 @@ function login($connect)
 		//$usuarioID = password_hash($return['id'] ?? 'NAN', PASSWORD_DEFAULT);
 		//$usuarioID = password_hash(session_id(), PASSWORD_DEFAULT);
 		$_SESSION[session_id()] = $return;
-		//$_SESSION[$usuarioID]['sessao'] = session_id();
+		$_SESSION[session_id()]['sessao'] = session_id();
 
 		# registrar data de login
 		atualizar('usuarios', ['login' => date("Y-m-d")], $return['id'], null, null, true, $connect);
@@ -58,7 +58,7 @@ function login($connect)
 		$acesso = strtolower($return['acesso']);
 
 		# Sucesso no login
-		header("location: index.php?page=$acesso");
+		header("location: index.php?pagina=$acesso");
 	} else {
 		// Falha no login
 		notificacao('Sistema', 'Dados de acesso inválidos!', 'error');
@@ -294,7 +294,7 @@ function eliminar($tabela, $parameter, $connect)
  * @param $connect usado para a conexão  
  * @param Obs: modo de usar - atualizar('tabela', ['linha' => 'valor', 'linha' => 'valor'], $id, $erros, 'Sucesso!', false, $connect)  
  */
-function atualizar($tabela, $dados, $id, $erros = null, $warning = null, $bool = false, $connect)
+function atualizar($tabela, $dados, $id, $erros, $warning, $bool, $connect)
 {
 	$set = [];
 	foreach ($dados as $coluna => $valor) {
@@ -568,15 +568,29 @@ function carregarImagem($caminho, $nome)
 {
 	$sourcePath = $_FILES['imagem']['tmp_name'];
 	//$nomeImagem = $_FILES['imagem']['name'];
-	$destinationPath = $caminho . $nome;
-	$type = $_FILES['imagem']['type'];
+	# Cria o diretório de destino se ele não existir
+	if (!is_dir($caminho)) {
+		mkdir($caminho, 0777, true);
+	}
+
 
 	$erros = array();
 
-	$arquivosPermitidos = ['png', 'jpg', 'jpeg', "JPG", "JPEG"];
-	$extensao = pathinfo($type, PATHINFO_EXTENSION);
-	if (!in_array($extensao, $arquivosPermitidos)) {
-		$erros[] = "Tipo de arquivo não permitido!";
+	// 3. Define as extensões permitidas
+	$extensoesPermitidas = ['png', 'jpg', 'jpeg', "JPG", "JPEG"];
+
+	// Obtém a extensão do arquivo enviado
+	$nomeOriginal = basename($_FILES['imagem']['name']);
+	$extensao = strtolower(pathinfo($nomeOriginal, PATHINFO_EXTENSION));
+	$destinationPath = $caminho . $nome . "." . $extensao;
+
+
+	// 4. Valida a extensão
+	if (!in_array($extensao, $extensoesPermitidas)) {
+		return [
+			'sucesso' => false,
+			'mensagem' => 'Formato de arquivo não permitido. Extensões aceitas: ' . implode(', ', $extensoesPermitidas)
+		];
 	}
 
 	$info = getimagesize($sourcePath);
@@ -588,13 +602,21 @@ function carregarImagem($caminho, $nome)
 		$saved = imagepng($image, $destinationPath); // Sem compressão adicional
 	} else {
 		// Não suporta outros formatos
-		return false;
+		return [
+			'sucesso' => false,
+			'mensagem' => 'Formato não permitido! Formatos aceites: image/jpeg, image/png'
+		];
 	}
 
 	// Libera a memória
 	imagedestroy($image);
 
-	return $saved ? basename($destinationPath) : false;
+	//return $saved ? basename($destinationPath) : false;
+	return [
+		'sucesso' => $saved ? true : false,
+		'mensagem' => $saved ? 'Imagem salva com sucesso':'Erro ao salvar imagem!',
+		'arquivo' => $saved ? basename($destinationPath) : 'Erro ao salvar imagem!'
+	];
 }
 
 
@@ -617,4 +639,71 @@ function filtrarNumber($key, $splitter = '-')
 	$partes = explode($splitter, $key);
 	$numero = end($partes);
 	return $numero; // 10
+}
+
+/**
+ * Função para upload de documentos
+ *
+ * @param array $arquivo O array $_FILES['nome_do_input']
+ * @param string $diretorioDestino O caminho da pasta onde o arquivo será salvo
+ * @param int $tamanhoMaximo Tamanho máximo permitido em bytes (Padrão: 5MB)
+ * @return array Retorna um array com 'sucesso' (bool) e 'mensagem' ou 'caminho'
+ */
+function uploadDocumento($arquivo, $diretorioDestino, $tamanhoMaximo = 5242880)
+{
+
+	// 1. Verifica se houve algum erro nativo no upload
+	if ($arquivo['error'] !== UPLOAD_ERR_OK) {
+		return [
+			'sucesso' => false,
+			'mensagem' => 'Erro ao fazer upload do arquivo. Código de erro: ' . $arquivo['error']
+		];
+	}
+
+	// 2. Verifica o tamanho do arquivo
+	if ($arquivo['size'] > $tamanhoMaximo) {
+		return [
+			'sucesso' => false,
+			'mensagem' => 'O arquivo excede o tamanho máximo permitido de ' . ($tamanhoMaximo / 1048576) . 'MB.'
+		];
+	}
+
+	// 3. Define as extensões permitidas
+	$extensoesPermitidas = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'rtf', 'csv'];
+
+	// Obtém a extensão do arquivo enviado
+	$nomeOriginal = basename($arquivo['name']);
+	$extensao = strtolower(pathinfo($nomeOriginal, PATHINFO_EXTENSION));
+
+	// 4. Valida a extensão
+	if (!in_array($extensao, $extensoesPermitidas)) {
+		return [
+			'sucesso' => false,
+			'mensagem' => 'Formato de arquivo não permitido. Extensões aceitas: ' . implode(', ', $extensoesPermitidas)
+		];
+	}
+
+	// 5. Cria o diretório de destino se ele não existir
+	if (!is_dir($diretorioDestino)) {
+		mkdir($diretorioDestino, 0777, true);
+	}
+
+	// 6. Gera um nome único para o arquivo (evita sobrescrever arquivos com o mesmo nome e problemas com caracteres especiais)
+	$novoNome = uniqid('doc_', true) . '.' . $extensao;
+	$caminhoCompleto = rtrim($diretorioDestino, '/') . '/' . $novoNome;
+
+	// 7. Move o arquivo do diretório temporário para o destino final
+	if (move_uploaded_file($arquivo['tmp_name'], $caminhoCompleto)) {
+		return [
+			'sucesso' => true,
+			'mensagem' => 'Upload realizado com sucesso!',
+			'caminho' => $caminhoCompleto,
+			'arquivo' => $novoNome
+		];
+	} else {
+		return [
+			'sucesso' => false,
+			'mensagem' => 'Falha ao mover o arquivo para o diretório de destino.'
+		];
+	}
 }

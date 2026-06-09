@@ -86,6 +86,9 @@
 </style>
 
 <?php
+# criar var de usuario
+$user = $_SESSION[$sessao];
+
 # importar o aside
 include_once 'layouts/aside.php';
 # importar o preloader
@@ -123,7 +126,7 @@ include_once 'layouts/preloader.php';
             include __DIR__ . "/{$sub}.php";
             break;
         case 'sair':
-            include __DIR__ . "/{$sub}.php";
+            logout($sessao);
             break;
         case 'administrador':
             // verificar acesso
@@ -148,10 +151,6 @@ include_once 'layouts/preloader.php';
         <span class="fab-ai__label">Assistente IA</span>
     </a>
 </main>
-
-<div id="FunctionPHPLogout">
-    <?php echo isset($_GET['logout']) ? "<h1>Sessao terminada!</h1>" : '' ?>
-</div>
 
 <!-- Ajax -->
 <script>
@@ -182,7 +181,7 @@ include_once 'layouts/preloader.php';
         if (!link) return;
 
         const href = link.getAttribute('href');
-        if (!href || href.startsWith('http') || href.includes('logout') || href.startsWith('#')) {
+        if (!href || href.startsWith('http')) {
             return;
         }
 
@@ -245,62 +244,28 @@ include_once 'layouts/preloader.php';
             .catch(err => console.error('Erro ao carregar conteúdo:', err));
     }
 
-    function logout() {
+    function logout(href) {
 
         var sessao = confirm("Desejas terminar a tua sessão?");
 
         if (!sessao) return;
 
-        // Caminho fixo para o processador de notificações
-        const url = window.location.href;
+        sessionStorage.removeItem('active');
+        sessionStorage.clear();
+        console.log(sessionStorage);
 
-        // Adicionamos um marcador para o PHP saber que é uma requisição AJAX POST
-        const sep = url.includes('?') ? '&' : '?';
-        const urlFetch = `${url}${sep}logout=true`;
+        // Lógica de extração de parâmetros
+        const urlParts = href.split('?');
+        const params = new URLSearchParams(urlParts.length > 1 ? urlParts[1] : "");
+        const section = params.get('section') || 'home';
 
-        fetch(urlFetch, {
-                method: 'GET',
-                cache: 'no-store' // Garante que traga dados novos do servidor
-            })
-            .then(response => {
-                if (!response.ok) throw new Error('Falha na requisição');
-                return response.text();
-            })
-            .then(html => {
-                // 1. Converte o texto recebido em elementos DOM
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
+        // Atualiza histórico e interface
+        history.pushState({
+            path: href,
+            section: section
+        }, "", href);
 
-                // 2. Busca o novo conteúdo (vido do PHP) e o alvo atual na sua página
-                const novoConteudo = doc.getElementById('FunctionPHPLogout');
-                const areaAtual = document.getElementById('FunctionPHPLogout');
-
-                // 3. Atualiza apenas se ambos existirem, evitando erros de console
-                if (novoConteudo && areaAtual) {
-                    // Usamos innerHTML para manter os event listeners da div pai ou 
-                    // replaceWith se quisermos substituir o container inteiro.
-                    //areaAtual.innerHTML = novoConteudo.innerHTML;
-                    areaAtual.innerHTML = '';
-                    areaAtual.replaceWith(novoConteudo);
-
-                    localStorage.clear();
-
-                    // Lógica de extração de parâmetros
-                    const urlParts = urlFetch.split('?');
-                    const params = new URLSearchParams(urlParts.length > 1 ? urlParts[1] : "");
-                    const section = params.get('section') || 'home';
-
-                    // Atualiza histórico e interface
-                    history.pushState({
-                        path: urlFetch,
-                        section: section
-                    }, "", urlFetch);
-
-                    // Log opcional para debug (pode remover depois)
-                    console.log('Sessao terminada às ' + new Date().toLocaleTimeString());
-                }
-            })
-            .catch(err => console.warn('Aviso: Não foi possível terminar a sessao.', err));
+        carregarConteudo(href);
     }
 
     function atualizarInterface(section, elementoClicado) {
@@ -445,9 +410,6 @@ include_once 'layouts/preloader.php';
 
                     // Se houver uma mensagem de sucesso no novo conteúdo, podemos disparar um alerta
                     console.log('Formulário processado com sucesso via AJAX');
-
-                    // ativar as funcoes do js
-                    funcoes();
                 }
             })
             .catch(err => {
