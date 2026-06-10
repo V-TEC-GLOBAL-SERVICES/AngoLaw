@@ -130,14 +130,17 @@ include_once 'layouts/preloader.php';
             break;
         case 'administrador':
             // verificar acesso
+            $user['acesso'] !== 'Administrador' ? logout($sessao) : '';
             include "contas/{$sub}.php";
             break;
         case 'advogado':
             // verificar acesso
+            $user['acesso'] !== 'Advogado' ? logout($sessao) : '';
             include "contas/{$sub}.php";
             break;
         case 'cliente':
             // verificar acesso
+            $user['acesso'] !== 'Cliente' ? logout($sessao) : '';
             include "contas/{$sub}.php";
             break;
         default:

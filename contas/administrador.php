@@ -180,9 +180,17 @@
 //var_dump($_SESSION[session_id()]);
 # atualizar dados
 isset($_POST['admin-perfil']) ? updateUsuario($user, $connect) : '';
+
+# inserir dados
 isset($_POST['admin-publicar']) ? setterPublicacao($user, $connect) : '';
 isset($_POST['admin-documento']) ? setterDocumento($user, $connect) : '';
+isset($_POST['admin-artigo']) ? setterArtigo($user, $connect) : '';
+isset($_POST['admin-playlist']) ? setterPlaylist($user, $connect) : '';
 
+# contador
+$cont = 0;
+
+# buscar os dados do ADMIN
 $dados = buscaUnica("SELECT * FROM `usuarios` WHERE `id`='{$user['id']}'", $connect);
 ?>
 
@@ -272,23 +280,30 @@ $dados = buscaUnica("SELECT * FROM `usuarios` WHERE `id`='{$user['id']}'", $conn
           <button type="reset" class="btn btn--muted cancel-btn">Cancelar</button>
         </div>
       </form>
-      <div id="publication-list" class="admin-list">
-        <div class="list-item">
-          <div>
-            <strong>Como funciona um contrato de serviço</strong>
-          </div>
-          <div class="item-meta">
-            <span><i class="fa-solid fa-tag"></i> Vídeo Educativo</span>
-          </div>
-          <div class="item-meta">
-            <span><i class="fa-solid fa-link"></i>
-              <a href="https://youtu.be/example1" target="_blank">Ver URL</a></span>
-          </div>
-          <p>Explicação passo a passo sobre os principais termos contratuais.</p>
-          <div class="item-actions">
-            <button type="button" class="view">Editar</button><button type="button" class="delete">Eliminar</button>
-          </div>
-        </div>
+      <div class="admin-list">
+        <?php if (buscaTotal("SELECT * FROM `publicacoes` WHERE `usuario`='{$user['id']}' ORDER BY `id`", $connect)) {
+          foreach (busca("SELECT * FROM `publicacoes` WHERE `usuario`='{$user['id']}' ORDER BY `id` DESC", $connect) as $dados) { ?>
+            <form method="post" class="list-item">
+              <div>
+                <strong><?= htmlspecialchars($dados['titulo']) ?></strong>
+              </div>
+              <div class="item-meta">
+                <span><i class="fa-solid fa-tag"></i> <?= htmlspecialchars($dados['tipo']) ?></span>
+              </div>
+              <div class="item-meta">
+                <span><i class="fa-solid fa-link"></i>
+                  <a href="<?= htmlspecialchars($dados['url']) ?>" target="_blank">Ver URL</a></span>
+              </div>
+              <p><?= htmlspecialchars($dados['descricao']) ?></p>
+              <div class="item-actions">
+                <button type="submit" class="admin-view" name="admin-editar-publicacao" id="admin-editar-publicacao-<?= ++$cont ?>" value="<?= base64_encode($dados['id']) ?>">Editar</button>
+                <button type="submit" class="delete" name="admin-editar-publicacao" id="admin-delet-publicacao-<?= $cont ?>" value="<?= base64_encode($dados['id']) ?>" onclick="return confirm('Desejas eliminar este item?')">Eliminar</button>
+              </div>
+            </form>
+        <?php  }
+        } else {
+          echo "<strong>Nenhuma publicação encontrada!!!</strong>";
+        } ?>
       </div>
     </div>
 
@@ -334,12 +349,34 @@ $dados = buscaUnica("SELECT * FROM `usuarios` WHERE `id`='{$user['id']}'", $conn
         </div>
       </form>
 
-      <div id="document-list" class="admin-list">
-        <div><strong>Contrato de Prestação de Serviços</strong></div>
-        <div class="item-meta"><span><i class="fa-solid fa-tag"></i> Minuta</span></div>
-        <p>Modelo de contrato que pode ser adaptado a diversas prestações de serviço.</p>
-        <p>Cláusulas principais do contrato: objeto, prazos, responsabilidades e penalidades.</p>
-        <div class="item-actions"><button type="button" class="view">Editar</button><button type="button" class="delete">Eliminar</button></div>
+      <div class="admin-list">
+        <?php if (buscaTotal("SELECT * FROM `documentos` WHERE `usuario`='{$user['id']}' ORDER BY `id`", $connect)) {
+          foreach (busca("SELECT * FROM `documentos` WHERE `usuario`='{$user['id']}' ORDER BY `id` DESC", $connect) as $dados) { ?>
+            <form method="post" class="list-item">
+              <div>
+                <strong><?= htmlspecialchars($dados['titulo']) ?></strong>
+              </div>
+              <div class="item-meta">
+                <span><i class="fa-solid fa-tag"></i> <?= htmlspecialchars($dados['tipo']) ?></span>
+              </div>
+              <div class="item-meta">
+                <span>
+                  <i class="fa-solid fa-link"></i>
+                  <a href="http://localhost/AngoLaw/uploads/documentos/<?= htmlspecialchars($dados['documento']) ?>" target="_self" download="<?= htmlspecialchars($dados['documento']) ?>">Ver documento</a>
+                  <i class="fa-solid fa-link"></i>
+                  <a href="http://localhost/AngoLaw/uploads/imagens/<?= htmlspecialchars($dados['imagem']) ?>" target="_self" download="<?= htmlspecialchars($dados['documento']) ?>">Ver imagem</a>
+                </span>
+              </div>
+              <p><?= htmlspecialchars($dados['descricao']) ?></p>
+              <div class="item-actions">
+                <button type="submit" class="admin-view" name="admin-editar-documento" id="admin-editar-documento-<?= ++$cont ?>" value="<?= base64_encode($dados['id']) ?>">Editar</button>
+                <button type="submit" class="delete" name="admin-editar-documento" id="admin-delet-documento-<?= $cont ?>" value="<?= base64_encode($dados['id']) ?>" onclick="return confirm('Desejas eliminar este item?')">Eliminar</button>
+              </div>
+            </form>
+        <?php  }
+        } else {
+          echo "<strong>Nenhum documento encontrado!!!</strong>";
+        } ?>
       </div>
     </div>
 
@@ -373,11 +410,26 @@ $dados = buscaUnica("SELECT * FROM `usuarios` WHERE `id`='{$user['id']}'", $conn
         </div>
       </form>
 
-      <div id="article-list" class="admin-list">
-        <div><strong>Guia de Mediação Familiar</strong></div>
-        <div class="item-meta"><span><i class="fa-solid fa-layer-group"></i> Direito Civil</span></div>
-        <p>Orientações para gerir conflitos familiares de forma amigável e segura.</p>
-        <div class="item-actions"><button type="button" class="view">Editar</button><button type="button" class="delete">Eliminar</button></div>
+      <div class="admin-list">
+        <?php if (buscaTotal("SELECT * FROM `artigos` WHERE `usuario`='{$user['id']}' ORDER BY `id`", $connect)) {
+          foreach (busca("SELECT * FROM `artigos` WHERE `usuario`='{$user['id']}' ORDER BY `id` DESC", $connect) as $dados) { ?>
+            <form method="post" class="list-item">
+              <div>
+                <strong><?= htmlspecialchars($dados['categoria']) ?></strong>
+              </div>
+              <div class="item-meta">
+                <span><i class="fa-solid fa-layer-group"></i> <?= htmlspecialchars($dados['titulo']) ?></span>
+              </div>
+              <p><?= htmlspecialchars($dados['descricao']) ?></p>
+              <div class="item-actions">
+                <button type="submit" class="admin-view" name="admin-editar-artigo" id="admin-editar-artigo-<?= ++$cont ?>" value="<?= base64_encode($dados['id']) ?>">Editar</button>
+                <button type="submit" class="delete" name="admin-editar-artigo" id="admin-delet-artigo-<?= $cont ?>" value="<?= base64_encode($dados['id']) ?>" onclick="return confirm('Desejas eliminar este item?')">Eliminar</button>
+              </div>
+            </form>
+        <?php  }
+        } else {
+          echo "<strong>Nenhum artigo encontrado!!!</strong>";
+        } ?>
       </div>
     </div>
 
@@ -402,7 +454,7 @@ $dados = buscaUnica("SELECT * FROM `usuarios` WHERE `id`='{$user['id']}'", $conn
           </div>
           <div class="form-group">
             <label for="playlist-description">Descrição</label>
-            <textarea id="playlist-description" name="description" rows="2"></textarea>
+            <textarea id="playlist-description" name="descricao" rows="2"></textarea>
           </div>
         </div>
         <div class="item-actions">
@@ -411,11 +463,32 @@ $dados = buscaUnica("SELECT * FROM `usuarios` WHERE `id`='{$user['id']}'", $conn
         </div>
       </form>
 
-      <div id="playlist-list" class="admin-list">
-        <div><strong>Playlist de Direito Civil</strong></div>
-        <div class="item-meta"><span><i class="fa-solid fa-link"></i> <a href="https://youtu.be/example22" target="_blank">Ver URL</a></span></div>
-        <p>Coleção de vídeos com conteúdos sobre contratos, família e responsabilidade civil.</p>
-        <div class="item-actions"><button type="button" class="view">Editar</button><button type="button" class="delete">Eliminar</button></div>
+      <div class="admin-list">
+        <?php if (buscaTotal("SELECT * FROM `playlists` WHERE `usuario`='{$user['id']}' ORDER BY `id`", $connect)) {
+          foreach (busca("SELECT * FROM `playlists` WHERE `usuario`='{$user['id']}' ORDER BY `id` DESC", $connect) as $dados) { ?>
+            <form method="post" class="list-item">
+              <div>
+                <strong>Playlist</strong>
+              </div>
+              <div class="item-meta">
+                <span><i class="fa-solid fa-layer-group"></i> <?= htmlspecialchars($dados['titulo']) ?></span>
+              </div>
+              <div class="item-meta">
+                <span>
+                  <i class="fa-solid fa-link"></i>
+                  <a href="<?= htmlspecialchars($dados['url']) ?>" target="_blank">Ver Link</a>
+                </span>
+              </div>
+              <p><?= htmlspecialchars($dados['descricao']) ?></p>
+              <div class="item-actions">
+                <button type="submit" class="admin-view" name="admin-editar-playlist" id="admin-editar-playlist-<?= ++$cont ?>" value="<?= base64_encode($dados['id']) ?>">Editar</button>
+                <button type="submit" class="delete" name="admin-editar-playlist" id="admin-delet-playlist-<?= $cont ?>" value="<?= base64_encode($dados['id']) ?>" onclick="return confirm('Desejas eliminar este item?')">Eliminar</button>
+              </div>
+            </form>
+        <?php  }
+        } else {
+          echo "<strong>Nenhuma playlist encontrada!!!</strong>";
+        } ?>
       </div>
     </div>
   </div>

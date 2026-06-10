@@ -47,18 +47,21 @@
                     <span class="sidebar__menu-text">Regulador</span>
                 </a>
             </li>
+            <?php if (isset($user['acesso']) && $user['acesso'] === 'Advogado') { ?>
             <li class="sidebar__menu-item">
                 <a href="index.php?pagina=<?= $_GET['pagina'] ?>&sub=advogado" id="advogado" class="sidebar__menu-link">
                     <span class="sidebar__menu-icon"><i class="fa-solid fa-user-tie"></i></span>
                     <span class="sidebar__menu-text">Conta</span>
                 </a>
             </li>
+            <?php } else if (isset($user['acesso']) && $user['acesso'] === 'Administrador') { ?>
             <li class="sidebar__menu-item">
                 <a href="index.php?pagina=<?= $_GET['pagina'] ?>&sub=administrador" id="administrador" class="sidebar__menu-link">
                     <span class="sidebar__menu-icon"><i class="fa-solid fa-user-shield"></i></span>
                     <span class="sidebar__menu-text">Administração</span>
                 </a>
             </li>
+            <?php } ?>
             <li class="sidebar__menu-item">
                 <a href="index.php?pagina=<?= $_GET['pagina'] ?>&sub=inicio" id="inicio" class="sidebar__menu-link">
                     <span class="sidebar__menu-icon"><i class="fa-solid fa-shield-halved"></i></span>

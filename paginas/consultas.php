@@ -373,145 +373,42 @@
   </div>
 
   <div class="lawyers-grid">
-
-    <div class="lawyer-card">
-      <div class="lawyer-card__banner lawyer-card__banner--blue">
-        <div class="lawyer-card__avatar">MS</div>
-      </div>
-      <div class="lawyer-card__body">
-        <div class="lawyer-card__name">Dra. Mariana Silva</div>
-        <div class="lawyer-card__spec">Direito Civil · Contratos</div>
-        <div class="lawyer-card__rating">
-          <div class="stars">★★★★★</div><span class="lawyer-card__rating-value">4.9</span><span class="lawyer-card__rating-count">(127 avaliações)</span>
+    <?php if (buscaTotal("SELECT * FROM `usuarios` WHERE `acesso`='Advogado' ORDER BY `id`", $connect)) {
+      foreach (busca("SELECT * FROM `usuarios` WHERE `acesso`='Advogado' ORDER BY `id` DESC", $connect) as $dados) { ?>
+        <div class="lawyer-card">
+          <div class="lawyer-card__banner lawyer-card__banner--blue">
+            <div class="lawyer-card__avatar"><?= htmlspecialchars(str_split($dados['nome'])['0']) ?></div>
+          </div>
+          <div class="lawyer-card__body">
+            <div class="lawyer-card__name"><?= htmlspecialchars($dados['nome']) ?></div>
+            <div class="lawyer-card__spec"><?= htmlspecialchars($dados['profissao']) ?></div>
+            <!-- <div class="lawyer-card__rating">
+              <div class="stars">★★★★★</div><span class="lawyer-card__rating-value">4.9</span><span class="lawyer-card__rating-count">(127 avaliações)</span>
+            </div> -->
+            <div class="lawyer-card__details">
+              <div class="lawyer-card__detail"><i class="fa-solid fa-location-dot"></i><?= htmlspecialchars($dados['localizacao']) ?></div>
+              <div class="lawyer-card__detail"><i class="fa-solid fa-graduation-cap"></i><?= htmlspecialchars($dados['experiencia']) ?></div>
+              <div class="lawyer-card__detail"><i class="fa-solid fa-video"></i><?= htmlspecialchars($dados['modalidade']) ?></div>
+            </div>
+          </div>
+          <div class="lawyer-card__footer">
+            <div class="lawyer-card__price">a partir de <strong><?= htmlspecialchars(formatarMoeda($dados['valor_consulta'])) ?></strong></div>
+            <button class="btn btn--primary btn--sm" onclick="openModal('m1')">Ver Perfil</button>
+          </div>
         </div>
-        <div class="lawyer-card__details">
-          <div class="lawyer-card__detail"><i class="fa-solid fa-location-dot"></i> Lisboa, Portugal</div>
-          <div class="lawyer-card__detail"><i class="fa-solid fa-graduation-cap"></i> 12 anos de experiência</div>
-          <div class="lawyer-card__detail"><i class="fa-solid fa-video"></i> Consulta online disponível</div>
-        </div>
-      </div>
-      <div class="lawyer-card__footer">
-        <div class="lawyer-card__price">a partir de <strong>80€</strong>/hora</div>
-        <button class="btn btn--primary btn--sm" onclick="openModal('m1')">Ver Perfil</button>
-      </div>
-    </div>
-
-    <div class="lawyer-card">
-      <div class="lawyer-card__banner lawyer-card__banner--green">
-        <div class="lawyer-card__avatar">RP</div>
-      </div>
-      <div class="lawyer-card__body">
-        <div class="lawyer-card__name">Dr. Ricardo Pinto</div>
-        <div class="lawyer-card__spec">Direito do Trabalho · Laboral</div>
-        <div class="lawyer-card__rating">
-          <div class="stars">★★★★★</div><span class="lawyer-card__rating-value">4.8</span><span class="lawyer-card__rating-count">(89 avaliações)</span>
-        </div>
-        <div class="lawyer-card__details">
-          <div class="lawyer-card__detail"><i class="fa-solid fa-location-dot"></i> Porto, Portugal</div>
-          <div class="lawyer-card__detail"><i class="fa-solid fa-graduation-cap"></i> 8 anos de experiência</div>
-          <div class="lawyer-card__detail"><i class="fa-solid fa-video"></i> Consulta online disponível</div>
-        </div>
-      </div>
-      <div class="lawyer-card__footer">
-        <div class="lawyer-card__price">a partir de <strong>70€</strong>/hora</div>
-        <button class="btn btn--primary btn--sm" onclick="openModal('m2')">Ver Perfil</button>
-      </div>
-    </div>
-
-    <div class="lawyer-card">
-      <div class="lawyer-card__banner lawyer-card__banner--purple">
-        <div class="lawyer-card__avatar">AC</div>
-      </div>
-      <div class="lawyer-card__body">
-        <div class="lawyer-card__name">Dra. Ana Costa</div>
-        <div class="lawyer-card__spec">Direito Fiscal · Tributário</div>
-        <div class="lawyer-card__rating">
-          <div class="stars">★★★★★</div><span class="lawyer-card__rating-value">5.0</span><span class="lawyer-card__rating-count">(203 avaliações)</span>
-        </div>
-        <div class="lawyer-card__details">
-          <div class="lawyer-card__detail"><i class="fa-solid fa-location-dot"></i> Lisboa, Portugal</div>
-          <div class="lawyer-card__detail"><i class="fa-solid fa-graduation-cap"></i> 15 anos de experiência</div>
-          <div class="lawyer-card__detail"><i class="fa-solid fa-video"></i> Consulta online disponível</div>
-        </div>
-      </div>
-      <div class="lawyer-card__footer">
-        <div class="lawyer-card__price">a partir de <strong>120€</strong>/hora</div>
-        <button class="btn btn--primary btn--sm" onclick="openModal('m3')">Ver Perfil</button>
-      </div>
-    </div>
-
-    <div class="lawyer-card">
-      <div class="lawyer-card__banner lawyer-card__banner--amber">
-        <div class="lawyer-card__avatar">JF</div>
-      </div>
-      <div class="lawyer-card__body">
-        <div class="lawyer-card__name">Dr. Jorge Ferreira</div>
-        <div class="lawyer-card__spec">Direito Imobiliário · Arrendamento</div>
-        <div class="lawyer-card__rating">
-          <div class="stars">★★★★☆</div><span class="lawyer-card__rating-value">4.6</span><span class="lawyer-card__rating-count">(54 avaliações)</span>
-        </div>
-        <div class="lawyer-card__details">
-          <div class="lawyer-card__detail"><i class="fa-solid fa-location-dot"></i> Coimbra, Portugal</div>
-          <div class="lawyer-card__detail"><i class="fa-solid fa-graduation-cap"></i> 10 anos de experiência</div>
-          <div class="lawyer-card__detail"><i class="fa-solid fa-phone"></i> Consulta por telefone</div>
-        </div>
-      </div>
-      <div class="lawyer-card__footer">
-        <div class="lawyer-card__price">a partir de <strong>65€</strong>/hora</div>
-        <button class="btn btn--primary btn--sm" onclick="openModal('m4')">Ver Perfil</button>
-      </div>
-    </div>
-
-    <div class="lawyer-card">
-      <div class="lawyer-card__banner lawyer-card__banner--teal">
-        <div class="lawyer-card__avatar">CM</div>
-      </div>
-      <div class="lawyer-card__body">
-        <div class="lawyer-card__name">Dra. Catarina Moura</div>
-        <div class="lawyer-card__spec">Direito Empresarial · Sociedades</div>
-        <div class="lawyer-card__rating">
-          <div class="stars">★★★★★</div><span class="lawyer-card__rating-value">4.9</span><span class="lawyer-card__rating-count">(176 avaliações)</span>
-        </div>
-        <div class="lawyer-card__details">
-          <div class="lawyer-card__detail"><i class="fa-solid fa-location-dot"></i> Braga, Portugal</div>
-          <div class="lawyer-card__detail"><i class="fa-solid fa-graduation-cap"></i> 18 anos de experiência</div>
-          <div class="lawyer-card__detail"><i class="fa-solid fa-video"></i> Consulta online disponível</div>
-        </div>
-      </div>
-      <div class="lawyer-card__footer">
-        <div class="lawyer-card__price">a partir de <strong>100€</strong>/hora</div>
-        <button class="btn btn--primary btn--sm" onclick="openModal('m5')">Ver Perfil</button>
-      </div>
-    </div>
-
-    <div class="lawyer-card">
-      <div class="lawyer-card__banner lawyer-card__banner--navy">
-        <div class="lawyer-card__avatar">LR</div>
-      </div>
-      <div class="lawyer-card__body">
-        <div class="lawyer-card__name">Dr. Luís Rodrigues</div>
-        <div class="lawyer-card__spec">Direito de Família · Herança</div>
-        <div class="lawyer-card__rating">
-          <div class="stars">★★★★☆</div><span class="lawyer-card__rating-value">4.7</span><span class="lawyer-card__rating-count">(91 avaliações)</span>
-        </div>
-        <div class="lawyer-card__details">
-          <div class="lawyer-card__detail"><i class="fa-solid fa-location-dot"></i> Faro, Portugal</div>
-          <div class="lawyer-card__detail"><i class="fa-solid fa-graduation-cap"></i> 6 anos de experiência</div>
-          <div class="lawyer-card__detail"><i class="fa-solid fa-video"></i> Consulta online disponível</div>
-        </div>
-      </div>
-      <div class="lawyer-card__footer">
-        <div class="lawyer-card__price">a partir de <strong>60€</strong>/hora</div>
-        <button class="btn btn--primary btn--sm" onclick="openModal('m6')">Ver Perfil</button>
-      </div>
-    </div>
-
+    <?php  }
+    } else {
+      echo "<strong>Nenhum advogado encontrado!!!</strong>";
+    } ?>
   </div>
 </section>
 
 <!-- ═══════════════ IMPROVED MODALS ═══════════════ -->
 
 <!-- Modal 1 – Mariana Silva -->
+<?php
+if (isset($_POST['verPerfil'])) {
+?>
 <div class="lmodal-overlay" id="m1">
   <div class="lmodal">
     <div class="lmodal__banner lmodal__banner--blue">
@@ -553,11 +450,11 @@
       <div class="lmodal__price-strip">
         <div>
           <div class="lmodal__price-label">Valor da consulta</div>
-          <div class="lmodal__price-val">80€ <small style="font-size:.75rem;font-weight:400;color:var(--text-muted)">/hora</small></div>
+          <div class="lmodal__price-val"><?= htmlspecialchars(formatarMoeda($dados['valor_consulta'])) ?> <small style="font-size:.75rem;font-weight:400;color:var(--text-muted)">/hora</small></div>
         </div>
         <div style="text-align:right">
           <div class="lmodal__price-note">Primeira consulta</div>
-          <div style="font-size:.88rem;font-weight:700;color:var(--green-600,#16a34a)">40€ (50% desconto)</div>
+          <div style="font-size:.88rem;font-weight:700;color:var(--green-600,#16a34a)"><?= htmlspecialchars(formatarMoeda($dados['desconto'])) ?></div>
         </div>
       </div>
       <div class="lmodal__section-title">Horários disponíveis esta semana</div>
@@ -576,276 +473,9 @@
     </div>
   </div>
 </div>
-
-<!-- Modal 2 – Ricardo Pinto -->
-<div class="lmodal-overlay" id="m2">
-  <div class="lmodal">
-    <div class="lmodal__banner lmodal__banner--green">
-      <button class="lmodal__close" onclick="closeModal('m2')"><i class="fa-solid fa-xmark"></i></button>
-      <div class="lmodal__avatar">RP</div>
-      <div class="lmodal__verified"><i class="fa-solid fa-check"></i></div>
-    </div>
-    <div class="lmodal__body">
-      <h2 class="lmodal__name">Dr. Ricardo Pinto</h2>
-      <p class="lmodal__spec">Advogado — Direito do Trabalho · Laboral · Despedimentos</p>
-      <div class="lmodal__rating-row"><span class="lmodal__stars">★★★★★</span><span class="lmodal__rating-val">4.8</span><span class="lmodal__rating-count">· 89 avaliações verificadas</span><span class="tag tag--green" style="font-size:.7rem">Verificado</span></div>
-      <div class="lmodal__tags"><span class="lmodal__tag">Direito do Trabalho</span><span class="lmodal__tag">Despedimentos</span><span class="lmodal__tag">Assédio Laboral</span><span class="lmodal__tag">CCT</span></div>
-      <div class="lmodal__info-grid">
-        <div class="lmodal__info-item"><i class="fa-solid fa-location-dot"></i>
-          <div class="lmodal__info-text"><span class="lmodal__info-label">Localização</span><span class="lmodal__info-val">Porto, Portugal</span></div>
-        </div>
-        <div class="lmodal__info-item"><i class="fa-solid fa-graduation-cap"></i>
-          <div class="lmodal__info-text"><span class="lmodal__info-label">Experiência</span><span class="lmodal__info-val">8 anos</span></div>
-        </div>
-        <div class="lmodal__info-item"><i class="fa-solid fa-chalkboard-teacher"></i>
-          <div class="lmodal__info-text"><span class="lmodal__info-label">Actividade extra</span><span class="lmodal__info-val">Docente universitário</span></div>
-        </div>
-        <div class="lmodal__info-item"><i class="fa-solid fa-video"></i>
-          <div class="lmodal__info-text"><span class="lmodal__info-label">Modalidade</span><span class="lmodal__info-val">Online e Presencial</span></div>
-        </div>
-      </div>
-      <div class="lmodal__section-title">Sobre o advogado</div>
-      <p class="lmodal__bio">Especialista em direito laboral com vasta experiência em processos de despedimento, negociação de contratos de trabalho e resolução de conflitos laborais. Docente universitário na área do Direito do Trabalho. Consultor de várias PME nacionais em matéria de relações laborais e cumprimento de CCT.</p>
-      <div class="lmodal__price-strip">
-        <div>
-          <div class="lmodal__price-label">Valor da consulta</div>
-          <div class="lmodal__price-val">70€ <small style="font-size:.75rem;font-weight:400;color:var(--text-muted)">/hora</small></div>
-        </div>
-        <div style="text-align:right">
-          <div class="lmodal__price-note">Primeira consulta</div>
-          <div style="font-size:.88rem;font-weight:700;color:var(--green-600,#16a34a)">35€ (50% desconto)</div>
-        </div>
-      </div>
-      <div class="lmodal__section-title">Horários disponíveis</div>
-      <div class="lmodal__slots">
-        <div class="lmodal__slot" onclick="selectSlot(this)">Ter 14:00</div>
-        <div class="lmodal__slot" onclick="selectSlot(this)">Qua 10:00</div>
-        <div class="lmodal__slot" onclick="selectSlot(this)">Qui 11:30</div>
-        <div class="lmodal__slot" onclick="selectSlot(this)">Sex 09:00</div>
-      </div>
-    </div>
-    <div class="lmodal__footer">
-      <button class="btn btn--outline" onclick="closeModal('m2')" style="flex:1">Fechar</button>
-      <button class="btn btn--primary" style="flex:2"><i class="fa-solid fa-calendar-plus" style="margin-right:6px"></i>Agendar Consulta</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal 3 – Ana Costa -->
-<div class="lmodal-overlay" id="m3">
-  <div class="lmodal">
-    <div class="lmodal__banner lmodal__banner--purple">
-      <button class="lmodal__close" onclick="closeModal('m3')"><i class="fa-solid fa-xmark"></i></button>
-      <div class="lmodal__avatar">AC</div>
-      <div class="lmodal__verified"><i class="fa-solid fa-check"></i></div>
-    </div>
-    <div class="lmodal__body">
-      <h2 class="lmodal__name">Dra. Ana Costa</h2>
-      <p class="lmodal__spec">Advogada — Direito Fiscal · Tributário · Planeamento Fiscal</p>
-      <div class="lmodal__rating-row"><span class="lmodal__stars">★★★★★</span><span class="lmodal__rating-val">5.0</span><span class="lmodal__rating-count">· 203 avaliações verificadas</span><span class="tag tag--amber" style="font-size:.7rem">Top Especialista</span></div>
-      <div class="lmodal__tags"><span class="lmodal__tag">IRS/IRC</span><span class="lmodal__tag">IVA</span><span class="lmodal__tag">Planeamento Fiscal</span><span class="lmodal__tag">Benefícios Fiscais</span></div>
-      <div class="lmodal__info-grid">
-        <div class="lmodal__info-item"><i class="fa-solid fa-location-dot"></i>
-          <div class="lmodal__info-text"><span class="lmodal__info-label">Localização</span><span class="lmodal__info-val">Lisboa, Portugal</span></div>
-        </div>
-        <div class="lmodal__info-item"><i class="fa-solid fa-graduation-cap"></i>
-          <div class="lmodal__info-text"><span class="lmodal__info-label">Experiência</span><span class="lmodal__info-val">15 anos</span></div>
-        </div>
-        <div class="lmodal__info-item"><i class="fa-solid fa-trophy"></i>
-          <div class="lmodal__info-text"><span class="lmodal__info-label">Avaliação</span><span class="lmodal__info-val">5.0 / 5.0 perfeita</span></div>
-        </div>
-        <div class="lmodal__info-item"><i class="fa-solid fa-video"></i>
-          <div class="lmodal__info-text"><span class="lmodal__info-label">Modalidade</span><span class="lmodal__info-val">Online e Presencial</span></div>
-        </div>
-      </div>
-      <div class="lmodal__section-title">Sobre a advogada</div>
-      <p class="lmodal__bio">Especialista de referência em direito fiscal em Portugal. 15 anos de experiência em IRS, IRC, IVA e planeamento fiscal para empresas e particulares. Avaliação perfeita de 5.0 em mais de 200 consultas. Antiga inspetora tributária, conhece profundamente os procedimentos da AT.</p>
-      <div class="lmodal__price-strip">
-        <div>
-          <div class="lmodal__price-label">Valor da consulta</div>
-          <div class="lmodal__price-val">120€ <small style="font-size:.75rem;font-weight:400;color:var(--text-muted)">/hora</small></div>
-        </div>
-        <div style="text-align:right">
-          <div class="lmodal__price-note">Primeira consulta</div>
-          <div style="font-size:.88rem;font-weight:700;color:var(--green-600,#16a34a)">60€ (50% desconto)</div>
-        </div>
-      </div>
-      <div class="lmodal__section-title">Horários disponíveis</div>
-      <div class="lmodal__slots">
-        <div class="lmodal__slot" onclick="selectSlot(this)">Seg 09:00</div>
-        <div class="lmodal__slot" onclick="selectSlot(this)">Ter 16:00</div>
-        <div class="lmodal__slot" onclick="selectSlot(this)">Qui 10:00</div>
-        <div class="lmodal__slot" onclick="selectSlot(this)">Sex 14:00</div>
-      </div>
-    </div>
-    <div class="lmodal__footer">
-      <button class="btn btn--outline" onclick="closeModal('m3')" style="flex:1">Fechar</button>
-      <button class="btn btn--primary" style="flex:2"><i class="fa-solid fa-calendar-plus" style="margin-right:6px"></i>Agendar Consulta</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal 4 – Jorge Ferreira -->
-<div class="lmodal-overlay" id="m4">
-  <div class="lmodal">
-    <div class="lmodal__banner lmodal__banner--amber">
-      <button class="lmodal__close" onclick="closeModal('m4')"><i class="fa-solid fa-xmark"></i></button>
-      <div class="lmodal__avatar">JF</div>
-      <div class="lmodal__verified"><i class="fa-solid fa-check"></i></div>
-    </div>
-    <div class="lmodal__body">
-      <h2 class="lmodal__name">Dr. Jorge Ferreira</h2>
-      <p class="lmodal__spec">Advogado — Direito Imobiliário · Arrendamento · Urbanismo</p>
-      <div class="lmodal__rating-row"><span class="lmodal__stars">★★★★☆</span><span class="lmodal__rating-val">4.6</span><span class="lmodal__rating-count">· 54 avaliações verificadas</span></div>
-      <div class="lmodal__tags"><span class="lmodal__tag">Arrendamento</span><span class="lmodal__tag">Compra e Venda</span><span class="lmodal__tag">Urbanismo</span><span class="lmodal__tag">Direitos Reais</span></div>
-      <div class="lmodal__info-grid">
-        <div class="lmodal__info-item"><i class="fa-solid fa-location-dot"></i>
-          <div class="lmodal__info-text"><span class="lmodal__info-label">Localização</span><span class="lmodal__info-val">Coimbra, Portugal</span></div>
-        </div>
-        <div class="lmodal__info-item"><i class="fa-solid fa-graduation-cap"></i>
-          <div class="lmodal__info-text"><span class="lmodal__info-label">Experiência</span><span class="lmodal__info-val">10 anos</span></div>
-        </div>
-        <div class="lmodal__info-item"><i class="fa-solid fa-phone"></i>
-          <div class="lmodal__info-text"><span class="lmodal__info-label">Contacto</span><span class="lmodal__info-val">Telefone e Online</span></div>
-        </div>
-        <div class="lmodal__info-item"><i class="fa-solid fa-house-chimney"></i>
-          <div class="lmodal__info-text"><span class="lmodal__info-label">Foco</span><span class="lmodal__info-val">Imobiliário</span></div>
-        </div>
-      </div>
-      <div class="lmodal__section-title">Sobre o advogado</div>
-      <p class="lmodal__bio">Especializado em direito imobiliário e arrendamento urbano. Auxilia proprietários, inquilinos e promotores imobiliários em disputas, rescisões, negociações e due diligence. Baseado em Coimbra com consultas presenciais e online em todo o país.</p>
-      <div class="lmodal__price-strip">
-        <div>
-          <div class="lmodal__price-label">Valor da consulta</div>
-          <div class="lmodal__price-val">65€ <small style="font-size:.75rem;font-weight:400;color:var(--text-muted)">/hora</small></div>
-        </div>
-        <div style="text-align:right">
-          <div class="lmodal__price-note">Primeira consulta</div>
-          <div style="font-size:.88rem;font-weight:700;color:var(--green-600,#16a34a)">Gratuita</div>
-        </div>
-      </div>
-      <div class="lmodal__section-title">Horários disponíveis</div>
-      <div class="lmodal__slots">
-        <div class="lmodal__slot" onclick="selectSlot(this)">Seg 14:00</div>
-        <div class="lmodal__slot" onclick="selectSlot(this)">Qua 10:00</div>
-        <div class="lmodal__slot" onclick="selectSlot(this)">Qua 14:00</div>
-        <div class="lmodal__slot" onclick="selectSlot(this)">Sex 14:00</div>
-      </div>
-    </div>
-    <div class="lmodal__footer">
-      <button class="btn btn--outline" onclick="closeModal('m4')" style="flex:1">Fechar</button>
-      <button class="btn btn--primary" style="flex:2"><i class="fa-solid fa-calendar-plus" style="margin-right:6px"></i>Agendar Consulta</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal 5 – Catarina Moura -->
-<div class="lmodal-overlay" id="m5">
-  <div class="lmodal">
-    <div class="lmodal__banner lmodal__banner--teal">
-      <button class="lmodal__close" onclick="closeModal('m5')"><i class="fa-solid fa-xmark"></i></button>
-      <div class="lmodal__avatar">CM</div>
-      <div class="lmodal__verified"><i class="fa-solid fa-check"></i></div>
-    </div>
-    <div class="lmodal__body">
-      <h2 class="lmodal__name">Dra. Catarina Moura</h2>
-      <p class="lmodal__spec">Advogada — Direito Empresarial · Sociedades · M&A</p>
-      <div class="lmodal__rating-row"><span class="lmodal__stars">★★★★★</span><span class="lmodal__rating-val">4.9</span><span class="lmodal__rating-count">· 176 avaliações verificadas</span><span class="tag tag--green" style="font-size:.7rem">Top Rated</span></div>
-      <div class="lmodal__tags"><span class="lmodal__tag">Constituição de Sociedades</span><span class="lmodal__tag">Fusões e Aquisições</span><span class="lmodal__tag">Governança</span><span class="lmodal__tag">Compliance</span></div>
-      <div class="lmodal__info-grid">
-        <div class="lmodal__info-item"><i class="fa-solid fa-location-dot"></i>
-          <div class="lmodal__info-text"><span class="lmodal__info-label">Localização</span><span class="lmodal__info-val">Braga, Portugal</span></div>
-        </div>
-        <div class="lmodal__info-item"><i class="fa-solid fa-graduation-cap"></i>
-          <div class="lmodal__info-text"><span class="lmodal__info-label">Experiência</span><span class="lmodal__info-val">18 anos</span></div>
-        </div>
-        <div class="lmodal__info-item"><i class="fa-solid fa-building"></i>
-          <div class="lmodal__info-text"><span class="lmodal__info-label">Especialidade</span><span class="lmodal__info-val">Direito Empresarial</span></div>
-        </div>
-        <div class="lmodal__info-item"><i class="fa-solid fa-video"></i>
-          <div class="lmodal__info-text"><span class="lmodal__info-label">Modalidade</span><span class="lmodal__info-val">Online e Presencial</span></div>
-        </div>
-      </div>
-      <div class="lmodal__section-title">Sobre a advogada</div>
-      <p class="lmodal__bio">18 anos de experiência em direito empresarial: constituição de sociedades, fusões e aquisições, contratos comerciais e governança corporativa. Uma das advogadas mais reputadas em Braga na área empresarial. Consultora de referência para startups e PME em expansão.</p>
-      <div class="lmodal__price-strip">
-        <div>
-          <div class="lmodal__price-label">Valor da consulta</div>
-          <div class="lmodal__price-val">100€ <small style="font-size:.75rem;font-weight:400;color:var(--text-muted)">/hora</small></div>
-        </div>
-        <div style="text-align:right">
-          <div class="lmodal__price-note">Primeira consulta</div>
-          <div style="font-size:.88rem;font-weight:700;color:var(--green-600,#16a34a)">50€ (50% desconto)</div>
-        </div>
-      </div>
-      <div class="lmodal__section-title">Horários disponíveis</div>
-      <div class="lmodal__slots">
-        <div class="lmodal__slot" onclick="selectSlot(this)">Ter 11:00</div>
-        <div class="lmodal__slot" onclick="selectSlot(this)">Qua 16:00</div>
-        <div class="lmodal__slot" onclick="selectSlot(this)">Qui 09:00</div>
-        <div class="lmodal__slot" onclick="selectSlot(this)">Sex 15:00</div>
-      </div>
-    </div>
-    <div class="lmodal__footer">
-      <button class="btn btn--outline" onclick="closeModal('m5')" style="flex:1">Fechar</button>
-      <button class="btn btn--primary" style="flex:2"><i class="fa-solid fa-calendar-plus" style="margin-right:6px"></i>Agendar Consulta</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal 6 – Luís Rodrigues -->
-<div class="lmodal-overlay" id="m6">
-  <div class="lmodal">
-    <div class="lmodal__banner lmodal__banner--navy">
-      <button class="lmodal__close" onclick="closeModal('m6')"><i class="fa-solid fa-xmark"></i></button>
-      <div class="lmodal__avatar">LR</div>
-      <div class="lmodal__verified"><i class="fa-solid fa-check"></i></div>
-    </div>
-    <div class="lmodal__body">
-      <h2 class="lmodal__name">Dr. Luís Rodrigues</h2>
-      <p class="lmodal__spec">Advogado — Direito de Família · Heranças · Divórcio</p>
-      <div class="lmodal__rating-row"><span class="lmodal__stars">★★★★☆</span><span class="lmodal__rating-val">4.7</span><span class="lmodal__rating-count">· 91 avaliações verificadas</span></div>
-      <div class="lmodal__tags"><span class="lmodal__tag">Divórcio</span><span class="lmodal__tag">Heranças</span><span class="lmodal__tag">Custódia</span><span class="lmodal__tag">Regulação Parental</span></div>
-      <div class="lmodal__info-grid">
-        <div class="lmodal__info-item"><i class="fa-solid fa-location-dot"></i>
-          <div class="lmodal__info-text"><span class="lmodal__info-label">Localização</span><span class="lmodal__info-val">Faro, Portugal</span></div>
-        </div>
-        <div class="lmodal__info-item"><i class="fa-solid fa-graduation-cap"></i>
-          <div class="lmodal__info-text"><span class="lmodal__info-label">Experiência</span><span class="lmodal__info-val">6 anos</span></div>
-        </div>
-        <div class="lmodal__info-item"><i class="fa-solid fa-heart"></i>
-          <div class="lmodal__info-text"><span class="lmodal__info-label">Abordagem</span><span class="lmodal__info-val">Humana e empática</span></div>
-        </div>
-        <div class="lmodal__info-item"><i class="fa-solid fa-video"></i>
-          <div class="lmodal__info-text"><span class="lmodal__info-label">Modalidade</span><span class="lmodal__info-val">Online (todo o país)</span></div>
-        </div>
-      </div>
-      <div class="lmodal__section-title">Sobre o advogado</div>
-      <p class="lmodal__bio">Advogado de família com especialização em divórcios, heranças e disputas de custódia. Abordagem humana e centrada no bem-estar do cliente e, especialmente, das crianças envolvidas. Disponível para consultas online em todo o território nacional, com especial atenção a situações sensíveis.</p>
-      <div class="lmodal__price-strip">
-        <div>
-          <div class="lmodal__price-label">Valor da consulta</div>
-          <div class="lmodal__price-val">60€ <small style="font-size:.75rem;font-weight:400;color:var(--text-muted)">/hora</small></div>
-        </div>
-        <div style="text-align:right">
-          <div class="lmodal__price-note">Primeira consulta</div>
-          <div style="font-size:.88rem;font-weight:700;color:var(--green-600,#16a34a)">Gratuita</div>
-        </div>
-      </div>
-      <div class="lmodal__section-title">Horários disponíveis</div>
-      <div class="lmodal__slots">
-        <div class="lmodal__slot" onclick="selectSlot(this)">Seg 10:00</div>
-        <div class="lmodal__slot" onclick="selectSlot(this)">Qua 10:00</div>
-        <div class="lmodal__slot" onclick="selectSlot(this)">Qui 16:00</div>
-        <div class="lmodal__slot" onclick="selectSlot(this)">Sex 10:00</div>
-      </div>
-    </div>
-    <div class="lmodal__footer">
-      <button class="btn btn--outline" onclick="closeModal('m6')" style="flex:1">Fechar</button>
-      <button class="btn btn--primary" style="flex:2"><i class="fa-solid fa-calendar-plus" style="margin-right:6px"></i>Agendar Consulta</button>
-    </div>
-  </div>
-</div>
+<?php
+}
+?>
 
 <script src="scripts/main.js"></script>
 <script>
